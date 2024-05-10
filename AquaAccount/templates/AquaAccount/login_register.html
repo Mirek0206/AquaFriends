@@ -6,10 +6,8 @@
 {% if page == 'register' %}
 
 <div class="auth">
-    <div class="card">
-        <div class="auth__header__heart">
-            <p><♡/></p>
-        </div>
+    <div class="card" style="margin-top: 20rem; margin-bottom: 10rem;">
+        <img class="auth__header__heart" src="{% static 'images/fish.png' %} " alt="Fish" />
         
         <div class="auth__header text-center">
             <h3>Zarejestruj konto</h3>
@@ -49,13 +47,11 @@
 <div class="auth">
 
     <div class="card">
-        <div class="auth__header__heart">
-            <p><♡/></p>
-        </div>
+        <img class="auth__header__heart" src="{% static 'images/fish.png' %} " alt="Fish" />
 
         <div class="auth__header text-center">
             <h3>Logowanie</h3>
-            <p>Witaj spowrotem deweloperze!</p>
+            <i>Zaloguj się, aby dalej odkrywać </br>i dbać o swoje podwodne królestwo.</p>
         </div>
 
         <form action="" method="POST" class="form auth__form">

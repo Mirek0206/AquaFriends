@@ -70,9 +70,9 @@ img {
 .header__logo > img {
   position: absolute;
   width: 30rem;
-  height: 16rem;
+  height: 30rem;
   z-index: 111;
-  margin-top: -4rem;
+  margin-top: -10rem;
 }
 
 .header__nav > ul {
@@ -820,7 +820,7 @@ img {
   left: 0;
   bottom: 0;
   right: 0;
-  background: url(../images/pattern.jpg);
+  background: url(../images/pattern.png);
 }
 
 .auth > .card {
@@ -849,12 +849,12 @@ img {
   margin-bottom: 2rem;
 }
 
-.auth__header__heart p {
-  font-size: 12rem;
-  position:absolute;
-  color: var(--color-sub);
-  transform: rotate(25deg);
-  margin: -12rem 0rem 0rem 40rem;
+.auth__header__heart {
+  position: absolute;
+  transform: rotate(10deg);
+  margin: -20rem 0rem 0rem 41rem;
+  height: 25rem;
+  width: 25rem;
 }
 
 .auth__form {
