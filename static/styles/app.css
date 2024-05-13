@@ -69,10 +69,10 @@ img {
 
 .header__logo > img {
   position: absolute;
-  width: 30rem;
-  height: 30rem;
+  width: 20rem;
+  height: 20rem;
   z-index: 111;
-  margin-top: -10rem;
+  margin-top: -8rem;
 }
 
 .header__nav > ul {
@@ -720,7 +720,7 @@ img {
 
 .settings {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
 }
 

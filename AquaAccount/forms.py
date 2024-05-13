@@ -34,10 +34,6 @@ class ProfileForm(ModelForm):
         fields = [
             'bio',
             'gender',
-            'city',
-            'street',
-            'house_number',
-            'postal_code',
             'phone_number',
             'age',
             'profile_image'
@@ -45,10 +41,6 @@ class ProfileForm(ModelForm):
         labels = {
             'bio': 'O mnie',
             'gender': 'Płeć',
-            'city': 'Lokalizacja',
-            'street': 'Ulica',
-            'house_number': 'Numer domu',
-            'postal_code': 'Kod pocztowy',
             'phone_number': 'Numer telefonu',
             'age': 'Wiek',
             'profile_image': 'Zdjęcie profilowe',
