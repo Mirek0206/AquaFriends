@@ -32,18 +32,18 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = [
+            'profile_image',
             'bio',
             'gender',
             'phone_number',
             'age',
-            'profile_image'
         ]
         labels = {
+            'profile_image': 'Zdjęcie profilowe',
             'bio': 'O mnie',
             'gender': 'Płeć',
             'phone_number': 'Numer telefonu',
             'age': 'Wiek',
-            'profile_image': 'Zdjęcie profilowe',
         }
 
     def __init__(self, *args, **kwargs):

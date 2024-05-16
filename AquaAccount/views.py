@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import OuterRef, Count
+
+from AquaMaker.models import Aquarium
 from .models import Profile
 from .forms import CustomUserCreationForm, ProfileForm, ChangePasswordForm
 
@@ -85,10 +86,12 @@ def userAccount(request):
     page = 'account'
     user = request.user
     profile = request.user.profile
+    aquariums = Aquarium.objects.filter(user=user)
 
     context = {
         'user': user,
         'profile': profile,
+        'aquariums': aquariums,
         'page': page
     }
     return render(request, 'aquaaccount/account.html', context)

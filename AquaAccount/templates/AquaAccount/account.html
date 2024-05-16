@@ -38,9 +38,32 @@
 
         <div class="settings">
           <h3 class="settings__title">Moje akwaria</h3>
-          <a class="tag tag--pill tag--main settings__btn tag--lg" href=""><i
+          <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'create_aquarium'%}"><i
               class="im im-plus"></i>Dodaj akwarium</a>
         </div>
+
+        <ul>
+          {% for aquarium in aquariums %}
+              <li style="list-style-type: none;">
+                  <div onclick="toggleDetails('details-{{ aquarium.id }}')" class="aquariums-list">
+                      {{ aquarium.name }}
+                  </div>
+                  <div id="details-{{ aquarium.id }}" class="aquarium-details">
+                      <p>Wymiary: {{ aquarium.x }} x {{ aquarium.y }} x {{ aquarium.z }} cm</p>
+                      <p>Oświetlenie: {{ aquarium.light }}</p>
+                      <p>Pompa: {{ aquarium.pump }}</p>
+                      <p>Grzałka: {{ aquarium.heater }}</p>
+                      <p>Filtry: 
+                          {% for filter in aquarium.filters.all %}
+                              {{ filter }},
+                          {% endfor %}
+                      </p>
+                  </div>
+              </li>
+          {% empty %}
+              <li>Brak akwariów</li>
+          {% endfor %}
+        </ul>
 
         <table class="settings__table">
           {% for project in projects %}
@@ -64,5 +87,16 @@
     </div>
   </div>
 </main>
+
+<script>
+  function toggleDetails(id) {
+      var details = document.getElementById(id);
+      if (details.style.display === "none" || details.style.display === "") {
+          details.style.display = "block";
+      } else {
+          details.style.display = "none";
+      }
+  }
+</script>
 
 {% endblock %}

@@ -1197,3 +1197,21 @@ img {
 .tag-button.hidden {
   visibility: hidden;
 }
+
+/*=======================
+  Aquariums
+========================*/
+.aquarium-details {
+  display: none; /* Ukryj detale domyślnie */
+}
+
+.aquariums-list {
+  background-color: white;
+  border-radius: 1rem;
+  background-color: var(--color-white);
+  border: 0.2rem solid var(--color-light);
+  padding-left: 5rem;
+  font-size: 2rem;
+  color: var(--color-sub);
+  cursor: pointer;
+}

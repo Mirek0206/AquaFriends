@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'AquaAccount.apps.AquaAccountsConfig',
+    'AquaAccount.apps.AquaaccountsConfig',
+    'AquaMaker.apps.AquamakerConfig',
 ]
 
 ASGI_APPLICATION = 'CodeHub.asgi.application'
