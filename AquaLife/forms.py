@@ -16,10 +16,14 @@ class AquariumForm(forms.ModelForm):
             'filters': 'Filtry',
         }
         widgets = {
-            'light': forms.Select(attrs={'class': 'input'}),
-            'pump': forms.Select(attrs={'class': 'input'}),
-            'heater': forms.Select(attrs={'class': 'input'}),
-            'filters': forms.CheckboxSelectMultiple(attrs={'class': 'input'}),
+            'name': forms.TextInput(attrs={'class': 'input', 'required': True}),
+            'x': forms.NumberInput(attrs={'class': 'input', 'required': True}),
+            'y': forms.NumberInput(attrs={'class': 'input', 'required': True}),
+            'z': forms.NumberInput(attrs={'class': 'input', 'required': True}),
+            'light': forms.Select(attrs={'class': 'input', 'required': True}),
+            'pump': forms.Select(attrs={'class': 'input', 'required': True}),
+            'heater': forms.Select(attrs={'class': 'input', 'required': True}),
+            'filters': forms.CheckboxSelectMultiple(attrs={'class': 'input', 'required': True}),
         }
 
     def __init__(self, user=None, *args, **kwargs):
@@ -44,7 +48,7 @@ class FishForm(forms.ModelForm):
             'species': 'Gatunek',
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'input'}),
-            'age': forms.NumberInput(attrs={'class': 'input'}),
-            'species': forms.Select(attrs={'class': 'input'}),
+            'name': forms.TextInput(attrs={'class': 'input', 'required': True}),
+            'age': forms.NumberInput(attrs={'class': 'input', 'required': True}),
+            'species': forms.Select(attrs={'class': 'input', 'required': True}),
         }

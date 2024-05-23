@@ -1210,8 +1210,11 @@ img {
   border-radius: 1rem;
   background-color: var(--color-white);
   border: 0.2rem solid var(--color-light);
-  padding-left: 5rem;
   font-size: 2rem;
   color: var(--color-sub);
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem;
 }

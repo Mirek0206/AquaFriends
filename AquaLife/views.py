@@ -14,14 +14,14 @@ def edit_aquarium(request, pk):
         if 'save_aquarium' in request.POST:
             if aquarium_form.is_valid():
                 aquarium_form.save()
-                return redirect('account')
+                return redirect('AquaLife:edit_aquarium', pk=aquarium.pk)
         
         if 'add_fish' in request.POST:
             if fish_form.is_valid():
                 fish = fish_form.save(commit=False)
                 fish.aquarium = aquarium
                 fish.save()
-                return redirect('edit_aquarium', pk=aquarium.pk)
+                return redirect('AquaLife:edit_aquarium', pk=aquarium.pk)
     
     else:
         aquarium_form = AquariumForm(user=request.user, instance=aquarium)
