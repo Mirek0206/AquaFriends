@@ -60,12 +60,13 @@
             <br>
 
             <!-- Lista rybek w akwarium -->
-            <ul>
+            <ul class="fish-list">
                 {% for fish in fishes %}
-                <li>
-                    <div>
-                        {{ fish.name }} ({{ fish.species }}), Wiek: {{ fish.age }}, Dodano: {{ fish.date_added }}
-                    </div>
+                <li class="fish-item">
+                    <div class="fish-capsule">{{ fish.name }}</div>
+                    <div class="fish-capsule">{{ fish.species }}</div>
+                    <div class="fish-capsule">Wiek: {{ fish.age }} msc.</div>
+                    <div class="fish-capsule">Dodano: {{ fish.date_added }}</div>
                 </li>
                 {% empty %}
                 <li>Brak rybek w akwarium</li>
