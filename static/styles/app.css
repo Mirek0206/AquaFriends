@@ -1254,9 +1254,45 @@ img {
   border-radius: 5rem;
   padding: 0.5rem 1rem;
   font-size: 1.5rem;
-  border: 0.2rem solid var(--color-sub-light);
+  color: #1e1e1e;
+  border: 2px solid var(--color-light);
+  background-color: var(--color-bg);
   margin-right: 0.5rem;
   margin-bottom: 0.5rem;
   white-space: nowrap;
+}
+
+.fish-name {
+  z-index: 10;
   width: 15rem;
+}
+
+.fish-species {
+  z-index: 9;
+  width: 30rem;
+  padding-left: 15rem;
+  margin-left: -15rem;
+}
+
+.fish-age {
+  z-index: 8;
+  width: 30rem;
+  padding-left: 15rem;
+  margin-left: -15rem;
+}
+
+.fish-date {
+  z-index: 7;
+  width: 30rem;
+  padding-left: 15rem;
+  margin-left: -15rem;
+}
+
+.btn-delete-fish {
+  background-color: var(--color-error-bg);
+  width: 4rem;
+  height: 4rem;
+  font-size: 2rem;
+  border-radius: 5rem;
+  border: 2px solid var(--color-light);
 }

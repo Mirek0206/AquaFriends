@@ -63,10 +63,14 @@
             <ul class="fish-list">
                 {% for fish in fishes %}
                 <li class="fish-item">
-                    <div class="fish-capsule">{{ fish.name }}</div>
-                    <div class="fish-capsule">{{ fish.species }}</div>
-                    <div class="fish-capsule">Wiek: {{ fish.age }} msc.</div>
-                    <div class="fish-capsule">Dodano: {{ fish.date_added }}</div>
+                    <div class="fish-capsule fish-name">{{ fish.name }}</div>
+                    <div class="fish-capsule fish-species">{{ fish.species }}</div>
+                    <div class="fish-capsule fish-age">Wiek: {{ fish.age }} msc.</div>
+                    <div class="fish-capsule fish-date">Dodano: {{ fish.date_added|date:"d.m.y" }}</div>
+                    <form method="POST" action="{% url 'AquaLife:delete_fish' fish.id %}">
+                        {% csrf_token %}
+                        <input type="submit" value="&#10060;" class="btn-delete-fish">
+                    </form>
                 </li>
                 {% empty %}
                 <li>Brak rybek w akwarium</li>

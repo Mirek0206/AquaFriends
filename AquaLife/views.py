@@ -37,3 +37,10 @@ def edit_aquarium(request, pk):
     }
     
     return render(request, 'AquaLife/edit_aquarium.html', context)
+
+@login_required(login_url='login')
+def delete_fish(request, pk):
+    fish = get_object_or_404(Fish, pk=pk, aquarium__user=request.user)
+    aquarium_pk = fish.aquarium.pk
+    fish.delete()
+    return redirect('AquaLife:edit_aquarium', pk=aquarium_pk)
