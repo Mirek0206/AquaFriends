@@ -67,7 +67,7 @@
                     <div class="fish-capsule fish-species">{{ fish.species }}</div>
                     <div class="fish-capsule fish-age">Wiek: {{ fish.age }} msc.</div>
                     <div class="fish-capsule fish-date">Dodano: {{ fish.date_added|date:"d.m.y" }}</div>
-                    <form method="POST" action="{% url 'AquaLife:delete_fish' fish.id %}">
+                    <form method="POST" action="{% url 'AquaLife:delete_fish' fish.id %}" class="delete-fish-form">
                         {% csrf_token %}
                         <input type="submit" value="&#10060;" class="btn-delete-fish">
                     </form>
@@ -79,4 +79,29 @@
         </div>
     </div>
 </main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const deleteForms = document.querySelectorAll('.delete-fish-form');
+    deleteForms.forEach(form => {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = this;
+        Swal.fire({
+          title: 'Czy na pewno chcesz usunąć tę rybkę?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Tak, usuń to!',
+          cancelButtonText: 'Anuluj'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            form.submit();
+          }
+        });
+      });
+    });
+  });
+</script>
 {% endblock content %}
