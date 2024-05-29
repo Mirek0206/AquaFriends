@@ -63,18 +63,21 @@
                         </p>
                       </div>
                       <div>
-                        <p><b>Rybki:</b>
-                            {% if aquarium_info.fishes %}
-                                <ul>
-                                    {% for fish in aquarium_info.fishes %}
-                                        <li style="list-style-type: none;">
-                                          <p><b>Imię</b> {{ fish.name }} | <b>Gatunek</b> {{ fish.species.name }} | <b>Wiek:</b> {{ fish.age }} miesięcy</p>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                Brak rybek w akwarium
-                            {% endif %}
+                        <div class="formHead">
+                          <p><b>Rybki w akwarium</b></p>
+                        </div>
+                        <br>
+                        <ul class="fish-list">
+                          {% for fish in aquarium_info.fishes %}
+                          <li class="fish-item">
+                              <div class="fish-capsule fish-name">{{ fish.name }}</div>
+                              <div class="fish-capsule fish-species">{{ fish.species }}</div>
+                              <div class="fish-capsule fish-age">Wiek: {{ fish.age }} msc.</div>
+                          </li>
+                          {% empty %}
+                          <p>Brak rybek w akwarium</p>
+                          {% endfor %}
+                        </ul>
                         </p>
                       </div>
                   </div>

@@ -54,7 +54,7 @@
 .tag--red,
 .tag--red > small {
   background: var(--color-error);
-  color: var(--color-sub);
+  color: var(--color-white);
   font-weight: 500;
 }
 

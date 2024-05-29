@@ -1025,6 +1025,9 @@ img {
   position: relative;
   margin-top: 2rem;
   margin-bottom: 4rem;
+  display: flex; /* Ustawiamy jako flex-container */
+  justify-content: space-between; /* Elementy rozmieszczone na końcach */
+  align-items: center; /* Wyśrodkowanie w pionie */
 }
 
 .formHead a {
@@ -1295,4 +1298,23 @@ img {
   font-size: 2rem;
   border-radius: 5rem;
   border: 2px solid var(--color-light);
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Rozmieszcza elementy z maksymalnym odstępem między nimi */
+}
+
+.flex-center {
+  flex-grow: 1; /* Pozwala na centrowanie elementu */
+  text-align: center;
+}
+
+.formPage .formWrapper .flex-container h3.no-inherit {
+  position: static; /* Resetuje właściwość position */
+  top: auto; /* Resetuje właściwość top */
+  left: auto; /* Resetuje właściwość left */
+  transform: none; /* Resetuje właściwość transform */
+  text-align: center; /* Przywraca wyrównanie tekstu */
 }

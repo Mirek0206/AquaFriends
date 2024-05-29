@@ -48,3 +48,10 @@ def delete_fish(request, pk):
     fish.delete()
     messages.success(request, 'Pomyślnie usunięto rybkę!')
     return redirect('AquaLife:edit_aquarium', pk=aquarium_pk)
+
+@login_required(login_url='login')
+def delete_aquarium(request, pk):
+    aquarium = get_object_or_404(Aquarium, pk=pk, user=request.user)
+    aquarium.delete()
+    messages.success(request, 'Pomyślnie usunięto rybkę!')
+    return redirect('account')
