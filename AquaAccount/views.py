@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+from AquaLife.models import Fish
 from AquaMaker.models import Aquarium
 from .models import Profile
 from .forms import CustomUserCreationForm, ProfileForm, ChangePasswordForm
@@ -88,10 +89,19 @@ def userAccount(request):
     profile = request.user.profile
     aquariums = Aquarium.objects.filter(user=user)
 
+    # Dodaj rybki dla każdego akwarium do kontekstu
+    aquarium_data = []
+    for aquarium in aquariums:
+        fishes = Fish.objects.filter(aquarium=aquarium)
+        aquarium_data.append({
+            'aquarium': aquarium,
+            'fishes': fishes
+        })
+
     context = {
         'user': user,
         'profile': profile,
-        'aquariums': aquariums,
+        'aquarium_data': aquarium_data,
         'page': page
     }
     return render(request, 'aquaaccount/account.html', context)

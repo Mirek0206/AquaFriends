@@ -29,7 +29,6 @@
         </div>
       </div>
 
-
       <div class="column column--2of3">
         <div class="devInfo">
           <h3 class="devInfo__title">O mnie</h3>
@@ -38,51 +37,55 @@
 
         <div class="settings">
           <h3 class="settings__title">Moje akwaria</h3>
-          <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'create_aquarium'%}"><i
+          <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'AquaMaker:create_aquarium' %}"><i
               class="im im-plus"></i>Dodaj akwarium</a>
         </div>
 
         <ul>
-          {% for aquarium in aquariums %}
+          {% for aquarium_info in aquarium_data %}
               <li style="list-style-type: none;">
-                  <div onclick="toggleDetails('details-{{ aquarium.id }}')" class="aquariums-list">
-                      {{ aquarium.name }}
+                  <div onclick="toggleDetails('details-{{ aquarium_info.aquarium.id }}')" class="aquariums-list">
+                      {{ aquarium_info.aquarium.name }}
+                      <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'AquaLife:edit_aquarium' aquarium_info.aquarium.id %}">Edytuj</a>
                   </div>
-                  <div id="details-{{ aquarium.id }}" class="aquarium-details">
-                      <p>Wymiary: {{ aquarium.x }} x {{ aquarium.y }} x {{ aquarium.z }} cm</p>
-                      <p>Oświetlenie: {{ aquarium.light }}</p>
-                      <p>Pompa: {{ aquarium.pump }}</p>
-                      <p>Grzałka: {{ aquarium.heater }}</p>
-                      <p>Filtry: 
-                          {% for filter in aquarium.filters.all %}
-                              {{ filter }},
+                  <div id="details-{{ aquarium_info.aquarium.id }}" class="aquarium-details">
+                      <div>
+                        <p><b>Szerokość:</b> {{ aquarium_info.aquarium.x }} cm</p>
+                        <p><b>Wysokość:</b> {{ aquarium_info.aquarium.y }} cm</p>
+                        <p><b>Długość:</b> {{ aquarium_info.aquarium.z }} cm</p>
+                        <p><b>Oświetlenie:</b> {{ aquarium_info.aquarium.light }}</p>
+                        <p><b>Pompa:</b> {{ aquarium_info.aquarium.pump }}</p>
+                        <p><b>Grzałka:</b> {{ aquarium_info.aquarium.heater }}</p>
+                        <p><b>Filtry:</b> 
+                            {% for filter in aquarium_info.aquarium.filters.all %}
+                                {{ filter }},
+                            {% endfor %}
+                        </p>
+                      </div>
+                      <div>
+                        <div class="formHead">
+                          <p><b>Rybki w akwarium</b></p>
+                        </div>
+                        <br>
+                        <ul class="fish-list">
+                          {% for fish in aquarium_info.fishes %}
+                          <li class="fish-item">
+                              <div class="fish-capsule fish-name">{{ fish.name }}</div>
+                              <div class="fish-capsule fish-species">{{ fish.species }}</div>
+                              <div class="fish-capsule fish-age">Wiek: {{ fish.age }} msc.</div>
+                          </li>
+                          {% empty %}
+                          <p>Brak rybek w akwarium</p>
                           {% endfor %}
-                      </p>
+                        </ul>
+                        </p>
+                      </div>
                   </div>
               </li>
           {% empty %}
               <li>Brak akwariów</li>
           {% endfor %}
         </ul>
-
-        <table class="settings__table">
-          {% for project in projects %}
-          <tr>
-            <td class="settings__tableInfo">
-              <a href="{% url 'display_project' project.id %}">{{project.title}}</a>
-              {% for tag in project.top_tags %}
-              <h4 class="tag tag--sub tag--pill">{{ tag.code_tag__name }}</h4>
-              {% endfor %}
-              {% if profile.favorite_project == project %}
-              <a style="float: right;"><span style="font-size: 19px;">&#9733;</span></a>
-              {% else %}
-              <a style="float: right;" href="{% url 'change_fav_project' project.id %}">
-                <span style="font-size: 19px;">&#9734;</span>
-              </a>
-              {% endif %}
-            </td>
-          {% endfor %}
-        </table>
       </div>
     </div>
   </div>
@@ -92,7 +95,7 @@
   function toggleDetails(id) {
       var details = document.getElementById(id);
       if (details.style.display === "none" || details.style.display === "") {
-          details.style.display = "block";
+          details.style.display = "flex";
       } else {
           details.style.display = "none";
       }

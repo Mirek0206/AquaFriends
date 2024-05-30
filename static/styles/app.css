@@ -1025,6 +1025,9 @@ img {
   position: relative;
   margin-top: 2rem;
   margin-bottom: 4rem;
+  display: flex; /* Ustawiamy jako flex-container */
+  justify-content: space-between; /* Elementy rozmieszczone na końcach */
+  align-items: center; /* Wyśrodkowanie w pionie */
 }
 
 .formHead a {
@@ -1203,6 +1206,17 @@ img {
 ========================*/
 .aquarium-details {
   display: none; /* Ukryj detale domyślnie */
+  background-color: white;
+  border-radius: 1rem;
+  background-color: var(--color-white);
+  border: 0.2rem solid var(--color-light);
+  font-size: 2rem;
+  color: var(--color-sub);
+  cursor: pointer;
+  justify-content: space-between;
+  align-items: flex-start; /* Dopasowanie do góry */
+  padding: 3rem;
+  margin-top: -2rem;
 }
 
 .aquariums-list {
@@ -1210,8 +1224,97 @@ img {
   border-radius: 1rem;
   background-color: var(--color-white);
   border: 0.2rem solid var(--color-light);
-  padding-left: 5rem;
   font-size: 2rem;
   color: var(--color-sub);
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem;
+  position: relative;
+  z-index: 101;
+}
+
+.aquarium-details-left,
+.aquarium-details-right {
+  flex: 1; /* Równy podział na dwie części */
+  padding: 1rem; /* Dodanie trochę odstępu wewnętrznego */
+}
+
+.fish-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fish-item {
+  display: flex;
+  flex-wrap: wrap; /* Zapewnia zawijanie wierszy w razie potrzeby */
+  margin-bottom: 1rem; /* Odstęp między wierszami rybek */
+}
+
+.fish-capsule {
+  border-radius: 5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  color: #1e1e1e;
+  border: 2px solid var(--color-light);
+  background-color: var(--color-bg);
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+}
+
+.fish-name {
+  z-index: 10;
+  width: 15rem;
+}
+
+.fish-species {
+  z-index: 9;
+  width: 30rem;
+  padding-left: 15rem;
+  margin-left: -15rem;
+}
+
+.fish-age {
+  z-index: 8;
+  width: 30rem;
+  padding-left: 15rem;
+  margin-left: -15rem;
+}
+
+.fish-date {
+  z-index: 7;
+  width: 30rem;
+  padding-left: 15rem;
+  margin-left: -15rem;
+}
+
+.btn-delete-fish {
+  background-color: var(--color-error-bg);
+  width: 4rem;
+  height: 4rem;
+  font-size: 2rem;
+  border-radius: 5rem;
+  border: 2px solid var(--color-light);
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Rozmieszcza elementy z maksymalnym odstępem między nimi */
+}
+
+.flex-center {
+  flex-grow: 1; /* Pozwala na centrowanie elementu */
+  text-align: center;
+}
+
+.formPage .formWrapper .flex-container h3.no-inherit {
+  position: static; /* Resetuje właściwość position */
+  top: auto; /* Resetuje właściwość top */
+  left: auto; /* Resetuje właściwość left */
+  transform: none; /* Resetuje właściwość transform */
+  text-align: center; /* Przywraca wyrównanie tekstu */
 }

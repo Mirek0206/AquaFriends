@@ -1,0 +1,132 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <div class="flex-container">
+                <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'account' %}">
+                    <i class="im im-plus"></i>Powrót
+                </a>
+                <h3 class="flex-center no-inherit">Akwarium {{ aquarium.name }}</h3>
+                <form method="POST" action="{% url 'AquaLife:delete_aquarium' aquarium.id %}" class="delete-aquarium-form">
+                    {% csrf_token %}
+                    <input type="submit" value="Usuń" class="tag tag--pill tag--red settings__btn tag--lg">
+                </form>
+            </div>
+            <br>
+
+            <!-- Formularz edycji akwarium -->
+            <form class="form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in aquarium_form %}
+                <div class="form__field">
+                    <label for="formInput#text">{{field.label}}</label>
+                    {{field}}
+                    {% for error in field.errors %}
+                    <p style="color: red;">{{error}}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <div class="settings__saveBtn">
+                    <input class="btn tag--main btn--main my-md tag--pill" type="submit" value="Zapisz" name="save_aquarium"/>
+                </div>
+            </form>
+        </div>
+        
+        <div class="formWrapper">
+            <div class="formHead">
+                <h3>Dodaj rybkę</h3>
+            </div>
+            <br>
+
+            <!-- Formularz dodawania rybek -->
+            <form class="form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in fish_form %}
+                <div class="form__field">
+                    <label for="formInput#text">{{field.label}}</label>
+                    {{field}}
+                    {% for error in field.errors %}
+                    <p style="color: red;">{{error}}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <div class="settings__saveBtn">
+                    <input class="btn tag--main btn--main my-md tag--pill" type="submit" value="Dodaj rybkę" name="add_fish"/>
+                </div>
+            </form>
+        </div>
+
+        <div class="formWrapper">
+            <div class="formHead">
+                <h3>Rybki w akwarium</h3>
+            </div>
+            <br>
+
+            <!-- Lista rybek w akwarium -->
+            <ul class="fish-list">
+                {% for fish in fishes %}
+                <li class="fish-item">
+                    <div class="fish-capsule fish-name">{{ fish.name }}</div>
+                    <div class="fish-capsule fish-species">{{ fish.species }}</div>
+                    <div class="fish-capsule fish-age">Wiek: {{ fish.age }} msc.</div>
+                    <div class="fish-capsule fish-date">Dodano: {{ fish.date_added|date:"d.m.y" }}</div>
+                    <form method="POST" action="{% url 'AquaLife:delete_fish' fish.id %}" class="delete-fish-form">
+                        {% csrf_token %}
+                        <input type="submit" value="&#10060;" class="btn-delete-fish">
+                    </form>
+                </li>
+                {% empty %}
+                <li>Brak rybek w akwarium</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const deleteFishForms = document.querySelectorAll('.delete-fish-form');
+    deleteFishForms.forEach(form => {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = this;
+        Swal.fire({
+          title: 'Czy na pewno chcesz usunąć tę rybkę?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#359e64',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Tak, usuń to!',
+          cancelButtonText: 'Anuluj'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            form.submit();
+          }
+        });
+      });
+    });
+
+    const deleteAquariumForm = document.querySelector('.delete-aquarium-form');
+    deleteAquariumForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const form = this;
+      Swal.fire({
+        title: 'Czy na pewno chcesz usunąć to akwarium?',
+        text: "Wszystkie rybki w tym akwarium również zostaną usunięte!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#359e64',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Tak, usuń to!',
+        cancelButtonText: 'Anuluj'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.submit();
+        }
+      });
+    });
+  });
+</script>
+{% endblock content %}

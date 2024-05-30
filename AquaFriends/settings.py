@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "AquaAccount.apps.AquaaccountsConfig",
     "AquaMaker.apps.AquamakerConfig",
     "AquaAdminPanel.apps.AquaadminpanelConfig",
+    'AquaLife.apps.AqualifeConfig',
 ]
 
 ASGI_APPLICATION = 'CodeHub.asgi.application'
