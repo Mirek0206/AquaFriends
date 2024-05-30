@@ -1,3 +1,11 @@
-from django.contrib import admin
+from django.db.models import Model
 
-# Register your models here.
+class AquaAdminPanel:
+    _registry: list[Model] = []
+
+    def register(self, model: Model):
+        ...
+
+    @property
+    def registry(self):
+        return self._registry
