@@ -9,7 +9,13 @@
       <div class="column column--1of3">
         <div class="card text-center">
           <div class="card__body dev">
-            MODULES
+            <a href="{% url 'admin_panel' %}">MODULES</a>
+            <br>
+            <ul>
+                {% for module in modules %}
+                    <li><a href="{% url 'admin_panel_model' module %}">{{module}}</a></li>
+                {% endfor %}
+            </ul>
           </div>
         </div>
       </div>
@@ -17,7 +23,16 @@
       <div class="column column--2of3">
         <div class="card text-center">
             <div class="card__body dev">
-              MEMBERS
+                {% if model %}
+                    <h2>{{model}}</h2>
+                    <ul>
+                    {% for instance in instances %}
+                        <li><a href="{% url 'admin_panel_details' model instance.id %}">{{instance}}</a></li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    Wybierz model który chcesz edytować
+                {% endif %}
             </div>
           </div>
       </div>
