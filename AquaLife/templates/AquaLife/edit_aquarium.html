@@ -11,7 +11,7 @@
                 <h3 class="flex-center no-inherit">Akwarium {{ aquarium.name }}</h3>
                 <form method="POST" action="{% url 'AquaLife:delete_aquarium' aquarium.id %}" class="delete-aquarium-form">
                     {% csrf_token %}
-                    <input type="submit" value="Usuń" class="tag tag--pill tag--red settings__btn tag--lg">
+                    <input style="border: 0px;" type="submit" value="Usuń" class="tag tag--pill tag--red settings__btn tag--lg">
                 </form>
             </div>
             <br>
