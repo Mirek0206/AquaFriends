@@ -1,10 +1,12 @@
 from multiprocessing import context
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Model
+from django import forms
+from django.forms import modelform_factory
 
 from .admin import AquaAdminPanel
 
@@ -38,6 +40,16 @@ def admin_login(request):
 
     return render(request, "AquaAdminPanel/login.htm")
 
+def get_model_form(model):
+    FormClass = modelform_factory(model, fields="__all__")
+
+    class ModelFormWithClass(FormClass):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            for field in self.fields.values():
+                field.widget.attrs.update({'class': 'input'})
+
+    return ModelFormWithClass
 
 @staff_member_required(login_url="admin_login")
 def admin_panel(request, module_name: str = None, pk: str = None):
@@ -52,9 +64,21 @@ def admin_panel(request, module_name: str = None, pk: str = None):
             return redirect("admin_panel")
 
         context["model"] = model.__name__
-        context["instances"] = model.objects.all()
 
-    if pk:
-        ...
+        if pk:
+            instance = get_object_or_404(model, pk=pk)
+            ModelForm = get_model_form(model)
+            if request.method == "POST":
+                form = ModelForm(request.POST, instance=instance)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, 'Obiekt został zaktualizowany')
+                    return redirect("admin_panel_model", module_name=module_name)
+            else:
+                form = ModelForm(instance=instance)
+            context["form"] = form
+            context["instance"] = instance
+        else:
+            context["instances"] = model.objects.all()
 
     return render(request, "AquaAdminPanel/panel.htm", context=context)
