@@ -65,7 +65,18 @@ def admin_panel(request, module_name: str = None, pk: str = None):
 
         context["model"] = model.__name__
 
-        if pk:
+        if pk == "new":
+            ModelForm = get_model_form(model)
+            if request.method == "POST":
+                form = ModelForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, 'Nowy obiekt został utworzony')
+                    return redirect("admin_panel_model", module_name=module_name)
+            else:
+                form = ModelForm()
+            context["form"] = form
+        elif pk:
             instance = get_object_or_404(model, pk=pk)
             ModelForm = get_model_form(model)
             if request.method == "POST":
