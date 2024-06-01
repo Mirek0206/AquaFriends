@@ -1,12 +1,11 @@
-from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Model
-from django import forms
 from django.forms import modelform_factory
+from django.db.models import ProtectedError, OneToOneField
 
 from .admin import AquaAdminPanel
 
@@ -93,3 +92,49 @@ def admin_panel(request, module_name: str = None, pk: str = None):
             context["instances"] = model.objects.all()
 
     return render(request, "AquaAdminPanel/panel.htm", context=context)
+
+staff_member_required(login_url="admin_login")
+def delete_instance(request, module_name: str, pk: str):
+    model = AquaAdminPanel().registry.get(module_name)
+    if model is None:
+        messages.error(request, 'Taki model nie istnieje')
+        return redirect("admin_panel")
+
+    instance = get_object_or_404(model, pk=pk)
+    context = {
+        "page": "delete",
+        "modules": [key for key in AquaAdminPanel().registry.keys()],
+        "model": model.__name__,
+        "instance": instance,
+        "related_objects": get_related_objects(instance)
+    }
+
+    if request.method == "POST":
+        try:
+            instance.delete()
+            messages.success(request, f'{model.__name__} został usunięty.')
+            return redirect("admin_panel_model", module_name=module_name)
+        except ProtectedError:
+            messages.error(request, f'{model.__name__} nie może być usunięty, ponieważ jest powiązany z innymi obiektami.')
+
+    return render(request, "AquaAdminPanel/panel.htm", context)
+
+def get_related_objects(instance):
+    related_objects = []
+    for rel in instance._meta.get_fields():
+        if rel.one_to_many or rel.one_to_one:
+            if isinstance(rel, OneToOneField):
+                accessor_name = rel.name
+            else:
+                accessor_name = rel.get_accessor_name()
+            related_manager = getattr(instance, accessor_name, None)
+            if related_manager:
+                if hasattr(related_manager, 'all'):
+                    related_objects.extend(related_manager.all())
+                else:
+                    related_objects.append(related_manager)
+        elif rel.many_to_many:
+            related_manager = getattr(instance, rel.name, None)
+            if related_manager:
+                related_objects.extend(related_manager.all())
+    return related_objects

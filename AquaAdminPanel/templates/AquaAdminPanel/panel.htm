@@ -23,12 +23,29 @@
       <div class="column column--2of3">
         <div class="card text-center">
             <div class="card__body dev">
-                {% if model %}
+                {%if page == "delete" %}
+                <h2>Potwierdź usunięcie</h2>
+                <p>Czy na pewno chcesz usunąć {{ model }}: {{ instance }}?</p>
+                {% if related_objects %}
+                    <h4>Powiązane obiekty:</h4>
+                    <ul>
+                        {% for related in related_objects %}
+                            <li>{{ related }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="{% url 'admin_panel_model' model %}" class="btn btn-secondary">Cancel</a>
+                </form>
+                {% elif model %}
                     <h2>{{model}}</h2>
                     <a href="{% url 'admin_panel_details' model 'new' %}" class="btn btn-success mb-4">Dodaj {{ model }}</a>
                     <ul>
                     {% for instance in instances %}
                         <li><a href="{% url 'admin_panel_details' model instance.id %}">{{instance}}</a></li>
+                        <a href="{% url 'admin_panel_delete_instance' model instance.pk %}" >Delete</a>
                     {% endfor %}
                     </ul>
                 {% else %}
