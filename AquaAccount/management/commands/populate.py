@@ -37,6 +37,7 @@ class Command(BaseCommand):
         :type kwargs: dict
         """
 
+        faker = Faker()
         user_generator = ProfileGenerator()
         existing_emails = set(User.objects.values_list('email', flat=True))
         creations: int = 0
@@ -104,6 +105,22 @@ class Command(BaseCommand):
             pump_model = Pump(power=single_pump)
             pump_model.save()
 
+        # create lights
+        aquarium_lights = [
+            "10W LED biała",
+            "10W LED czarna",
+            "16W LED biała 40-60cm",
+            "16W LED czarna 40-60cm",
+            "32W biała 80-100cm",
+            "32W czarna 80-100cm",
+            "10W belka LED biała 50-70cm",
+            "36W belka LED biała 100-120cm"
+        ]
+
+        for single_light in aquarium_lights:
+            light_model = Light(power=single_light)
+            light_model.save()
+
         while creations < requested:
             for data in user_generator.generate(requested - creations):
                 if data['email'] in existing_emails:
@@ -134,11 +151,12 @@ class Command(BaseCommand):
                     x=random.randrange(10, 50),
                     y=random.randrange(10, 50),
                     z=random.randrange(10, 50),
-                    light=random.choice(Light.objects),
-                    pump=random.choice(Pump.objects),
-                    heater=random.choice(Heater.objects),
-                    filters=random.choice(Filter.objects)
+                    light=random.choice(Light.objects.all()),
+                    pump=random.choice(Pump.objects.all()),
+                    heater=random.choice(Heater.objects.all()),
                 )
+
+                first_aquarium.filters.add(random.choice(Filter.objects.all()))
 
                 second_aquarium = Aquarium.objects.create(
                     user=user,
@@ -146,11 +164,12 @@ class Command(BaseCommand):
                     x=random.randrange(10, 50),
                     y=random.randrange(10, 50),
                     z=random.randrange(10, 50),
-                    light=random.choice(Light.objects),
-                    pump=random.choice(Pump.objects),
-                    heater=random.choice(Heater.objects),
-                    filters=random.choice(Filter.objects)
+                    light=random.choice(Light.objects.all()),
+                    pump=random.choice(Pump.objects.all()),
+                    heater=random.choice(Heater.objects.all()),
                 )
+
+                second_aquarium.filters.add(random.choice(Filter.objects.all()))
 
                 third_aquarium = Aquarium.objects.create(
                     user=user,
@@ -158,36 +177,37 @@ class Command(BaseCommand):
                     x=random.randrange(10, 50),
                     y=random.randrange(10, 50),
                     z=random.randrange(10, 50),
-                    light=random.choice(Light.objects),
-                    pump=random.choice(Pump.objects),
-                    heater=random.choice(Heater.objects),
-                    filters=random.choice(Filter.objects)
+                    light=random.choice(Light.objects.all()),
+                    pump=random.choice(Pump.objects.all()),
+                    heater=random.choice(Heater.objects.all()),
                 )
+                
+                third_aquarium.filters.add(random.choice(Filter.objects.all()))
 
                 # add fish to the 1st aquarium
                 for _ in range(random.randint(1, 4)):
                     Fish.objects.create(
-                        name=Faker.first_name,
+                        name=faker.first_name(),
                         age=random.randint(0, 20),
-                        species=random.choice(Species.objects),
+                        species=random.choice(Species.objects.all()),
                         aquarium=first_aquarium
                     )
 
                 # add fish to the 2nd aquarium
                 for _ in range(random.randint(1, 4)):
                     Fish.objects.create(
-                        name=Faker.first_name,
+                        name=faker.first_name(),
                         age=random.randint(0, 20),
-                        species=random.choice(Species.objects),
+                        species=random.choice(Species.objects.all()),
                         aquarium=second_aquarium
                     )
 
                 # add fish to the 3rd aquarium
                 for _ in range(random.randint(1, 4)):
                     Fish.objects.create(
-                        name=Faker.first_name,
+                        name=faker.first_name(),
                         age=random.randint(0, 20),
-                        species=random.choice(Species.objects),
+                        species=random.choice(Species.objects.all()),
                         aquarium=third_aquarium
                     )
 
