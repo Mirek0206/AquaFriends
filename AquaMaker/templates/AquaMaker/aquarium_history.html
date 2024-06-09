@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h2>History for {{ aquarium.name }}</h2>
+<ul>
+    {% for record in history %}
+        <li>
+            {{ record.history_date }} - {{ record.get_history_type_display }} - {{ record }}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
