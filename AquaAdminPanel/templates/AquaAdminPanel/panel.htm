@@ -9,13 +9,14 @@
       <div class="column column--1of3">
         <div class="card text-center">
           <div class="card__body dev">
-            <a href="{% url 'admin_panel' %}">MODULES</a>
-            <br>
-            <ul>
-                {% for module in modules %}
-                    <li><a href="{% url 'admin_panel_model' module %}">{{module}}</a></li>
-                {% endfor %}
-            </ul>
+            <h2 class="dev__username">MODELE</h2>
+            {% for module in modules %}
+                <a style="all: initial; cursor: pointer" href="{% url 'admin_panel_model' module %}">
+                    <div class="message_card">
+                        <h3>{{module}}</h3>
+                    </div>
+                </a>
+            {% endfor %}
           </div>
         </div>
       </div>
@@ -23,61 +24,62 @@
       <div class="column column--2of3">
         <div class="card text-center">
             <div class="card__body dev">
-                {%if page == "delete" %}
-                <h2>Potwierdź usunięcie</h2>
-                <p>Czy na pewno chcesz usunąć {{ model }}: {{ instance }}?</p>
+            {%if page == "delete" %}
+            <h2 class="dev__username">Potwierdź usunięcie</h2>
+                <p>Czy na pewno chcesz usunąć <b>{{ model }}: {{ instance }}</b> ?</p></br>
                 {% if related_objects %}
-                    <h4>Powiązane obiekty:</h4>
-                    <ul>
+                    <h4>Powiązane obiekty:</h4></br>
                         {% for related in related_objects %}
-                            <li>{{ related }}</li>
-                        {% endfor %}
-                    </ul>
+                            <p>{{ related }}</p>
+                        {% endfor %}</br>
                 {% endif %}
                 <form method="post" class="mt-4">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                    <a href="{% url 'admin_panel_model' model %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn--error">Usuń</button>
+                    <a href="{% url 'admin_panel_model' model %}" class="btn ">Anuluj</a>
                 </form>
-                {% elif model %}
-                    <h2>{{model}}</h2>
+            {% elif model %}
+                    <h2 class="dev__username">{{model}}</h2>
                     <a href="{% url 'admin_panel_details' model 'new' %}" class="btn btn-success mb-4">Dodaj {{ model }}</a>
-                    <ul>
-                    {% for instance in instances %}
-                        <li><a href="{% url 'admin_panel_details' model instance.id %}">{{instance}}</a></li>
-                        <a href="{% url 'admin_panel_delete_instance' model instance.pk %}" >Delete</a>
-                    {% endfor %}
-                    </ul>
-                {% else %}
-                    Wybierz model który chcesz edytować
-                {% endif %}
-                {% if form %}
-                    <main class="formPage my-xl">
-                        <div class="content-box">
-                            <div class="formWrapper">
-                                    <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'admin_panel_model' model %}">
-                                        <i class="im im-plus"></i>Powrót</a>
-                                <br>
-                                <form class="form" method="POST" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {% for field in form %}
-                                    <div class="form__field">
-                                        <label for="formInput#text">{{field.label}}</label>
-                                        {{field}}
-
-                                        {% for error in field.errors %}
-                                        <p style="color: red;">{{error}}</p>
-                                        {% endfor %}
-                                    </div>
-                                    {% endfor %}
-                                    <div class="settings__saveBtn">
-                                        <input class="btn tag--main btn--main my-md tag--pill" type="submit" value="Zapisz" name="save"/>
-                                    </div>
-                                </form>
-                            </div>
+                {% for instance in instances %}
+                    <a style="all: initial; cursor: pointer" href="{% url 'admin_panel_details' model instance.id %}">
+                        <div class="message_card" style="justify-content: space-between">
+                            <h3>{{instance}}</h3>
+                            <a href="{% url 'admin_panel_delete_instance' model instance.pk %}" class="btn btn--sm btn--error">Usuń</a>
                         </div>
-                    </main>
-                {% endif %}
+                    </a>
+                    
+                {% endfor %}
+            {% else %}
+                    Wybierz model który chcesz edytować
+            {% endif %}
+            {% if form %}
+                <div class="formPage my-xl">
+                    <div class="content-box">
+                        <div class="formWrapper">
+                                <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'admin_panel_model' model %}">
+                                    <i class="im im-plus"></i>Powrót</a>
+                            <br>
+                            <form class="form" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                <div class="form__field">
+                                    <label for="formInput#text" style="text-align: left;">{{field.label}}</label>
+                                    {{field}}
+
+                                    {% for error in field.errors %}
+                                    <p style="color: red;">{{error}}</p>
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                                <div class="settings__saveBtn">
+                                    <input class="btn tag--main btn--main my-md tag--pill" type="submit" value="Zapisz" name="save"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
             </div>
           </div>
       </div>
