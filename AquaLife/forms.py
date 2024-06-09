@@ -1,10 +1,11 @@
 from django import forms
+from django_select2.forms import Select2MultipleWidget
 from .models import Aquarium, Fish
 
 class AquariumForm(forms.ModelForm):
     class Meta:
         model = Aquarium
-        fields = ['name', 'x', 'y', 'z', 'light', 'pump', 'heater', 'filters']
+        fields = ['name', 'x', 'y', 'z', 'light', 'pump', 'heater', 'filters', 'decorators']
         labels = {
             'name': 'Nazwa',
             'x': 'Szerokość (cm)',
@@ -14,6 +15,7 @@ class AquariumForm(forms.ModelForm):
             'pump': 'Pompa',
             'heater': 'Grzałka',
             'filters': 'Filtry',
+            'decorators': 'Dekoracje',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'input', 'required': True}),
@@ -23,7 +25,8 @@ class AquariumForm(forms.ModelForm):
             'light': forms.Select(attrs={'class': 'input', 'required': True}),
             'pump': forms.Select(attrs={'class': 'input', 'required': True}),
             'heater': forms.Select(attrs={'class': 'input', 'required': True}),
-            'filters': forms.CheckboxSelectMultiple(attrs={'class': 'input', 'required': True}),
+            'filters': Select2MultipleWidget(attrs={'class': 'input'}),
+            'decorators': Select2MultipleWidget(attrs={'class': 'input'}),
         }
 
     def __init__(self, user=None, *args, **kwargs):
