@@ -35,7 +35,9 @@ INSTALLED_APPS = [
     "AquaAccount.apps.AquaaccountsConfig",
     "AquaMaker.apps.AquamakerConfig",
     "AquaAdminPanel.apps.AquaadminpanelConfig",
-    'AquaLife.apps.AqualifeConfig',
+    "AquaLife.apps.AqualifeConfig",
+    #
+    "django_select2",
 ]
 
 ASGI_APPLICATION = 'CodeHub.asgi.application'
