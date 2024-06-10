@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "AquaMaker.apps.AquamakerConfig",
     "AquaAdminPanel.apps.AquaadminpanelConfig",
     "AquaLife.apps.AqualifeConfig",
+    "AquaMonitor.apps.AquamonitorConfig",
     #
     "django_select2",
 ]
