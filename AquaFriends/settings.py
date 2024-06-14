@@ -23,18 +23,21 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
-
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'AquaAccount.apps.AquaaccountsConfig',
-    'AquaMaker.apps.AquamakerConfig',
-    'AquaLife.apps.AqualifeConfig',
+    "channels",
+    #
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    #
+    "AquaAccount.apps.AquaaccountsConfig",
+    "AquaMaker.apps.AquamakerConfig",
+    "AquaAdminPanel.apps.AquaadminpanelConfig",
+    "AquaLife.apps.AqualifeConfig",
+    #
+    "django_select2",
 ]
 
 ASGI_APPLICATION = 'CodeHub.asgi.application'

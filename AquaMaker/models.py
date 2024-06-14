@@ -30,7 +30,13 @@ class Filter(models.Model):
     type = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'Filter ({self.type})'
+        return f'Filtr ({self.type})'
+    
+class Decorator(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'Filter ({self.name})'
 
 class Aquarium(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -42,6 +48,7 @@ class Aquarium(models.Model):
     pump = models.ForeignKey('Pump', on_delete=models.CASCADE)
     heater = models.ForeignKey('Heater', on_delete=models.CASCADE)
     filters = models.ManyToManyField(Filter, blank=True)
+    decorators = models.ManyToManyField(Decorator, blank=True)
     
     def __str__(self) -> str:
         return str(self.name)
