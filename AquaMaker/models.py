@@ -3,22 +3,28 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Pump(models.Model):
-    power = models.CharField(max_length=50)
+    power = models.PositiveSmallIntegerField(default=10)
+    min_volume = models.PositiveSmallIntegerField(default=20)
+    max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Pump ({self.power})'
+        return f'Pump {self.power}W'
 
 class Light(models.Model):
-    power = models.CharField(max_length=50)
+    power = models.PositiveSmallIntegerField(default=10)
+    min_volume = models.PositiveSmallIntegerField(default=20)
+    max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Light ({self.power})'
+        return f'Light {self.power}W'
 
 class Heater(models.Model):
-    power = models.CharField(max_length=50)
+    power = models.PositiveSmallIntegerField(default=10)
+    min_volume = models.PositiveSmallIntegerField(default=20)
+    max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Heater ({self.power})'
+        return f'Heater {self.power}W'
 
 class Filter(models.Model):
     type = models.CharField(max_length=50)
