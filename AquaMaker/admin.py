@@ -1,7 +1,9 @@
 from django.contrib import admin
-from .models import Aquarium, Pump, Light, Heater, Filter
+from simple_history.admin import SimpleHistoryAdmin
 
-admin.site.register(Aquarium)
+from .models import Aquarium, Filter, Heater, Light, Pump
+
+admin.site.register(Aquarium, SimpleHistoryAdmin)
 admin.site.register(Pump)
 admin.site.register(Light)
 admin.site.register(Heater)
