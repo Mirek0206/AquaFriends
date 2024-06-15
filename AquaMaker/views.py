@@ -36,6 +36,9 @@ _HISTORY_LABELS: dict[str, str] = {
     "heater": "Grzałka",
 }
 
+def format_filter_list(filters):
+    return ", ".join([str(f.filter) for f in filters])
+
 
 @login_required(login_url="login")
 def aquarium_history(request, pk: int):
@@ -48,12 +51,17 @@ def aquarium_history(request, pk: int):
         old_record = change.prev_record
 
         delta = new_record.diff_against(old_record, foreign_keys_are_objs=True)
-        history.extend(
-            [
-                f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - {_HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{event.old}' na '{event.new}'"
-                for event in delta.changes
-            ],
-        )
+        for event in delta.changes:
+            if event.field == "filters":
+                old_filters = format_filter_list(old_record.filters.all())
+                new_filters = format_filter_list(new_record.filters.all())
+                history.append(
+                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - { _HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{old_filters}' na '{new_filters}'"
+                )
+            else:
+                history.append(
+                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - {_HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{event.old}' na '{event.new}'"
+                )
         change = change.prev_record
 
     # Get the historical records for all fishes associated with the aquarium
