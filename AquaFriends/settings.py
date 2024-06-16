@@ -1,5 +1,5 @@
 from pathlib import Path
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -10,8 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-load_dotenv()
-SECRET_KEY = os.getenv('DJANGO_SECRET')
+#load_dotenv()
+#SECRET_KEY = os.getenv('DJANGO_SECRET')
+SECRET_KEY = "dupa1234"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 ASGI_APPLICATION = 'CodeHub.asgi.application'
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer'
