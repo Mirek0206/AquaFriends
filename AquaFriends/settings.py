@@ -37,11 +37,12 @@ INSTALLED_APPS = [
     "AquaMaker.apps.AquamakerConfig",
     "AquaAdminPanel.apps.AquaadminpanelConfig",
     "AquaLife.apps.AqualifeConfig",
+    "AquaViewMatchShare.apps.AquaViewMatchShareConfig",
     #
     "django_select2",
 ]
 
-ASGI_APPLICATION = 'CodeHub.asgi.application'
+ASGI_APPLICATION = 'AquaFriends.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
@@ -76,8 +77,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                #'Users.context_processors.count_matches',
-                #'Chat.context_processors.count_unread_messages'
+                'AquaViewMatchShare.context_processors.count_matches',
+                'AquaViewMatchShare.context_processors.count_unread_messages'
             ],
         },
     },
