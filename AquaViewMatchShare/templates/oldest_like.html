@@ -17,45 +17,9 @@
             <p class="dev__location">Wiek: {{matched_user.profile.age}}</p>
             {% endif %}
 
-            {% if matched_user.profile.city %}
-            <p class="dev__location">Lokalizacja: {{matched_user.profile.city}}</p>
-            {% endif %}
-
             {% if matched_user.profile.gender %}
             <p class="dev__location">Płeć: {{matched_user.profile.gender}}</p>
             {% endif %}
-
-            <ul class="dev__social">
-              {% if matched_user.profile.social_github %}
-              <li>
-                <a title="Github" href="{{matched_user.profile.social_github}}" target="_blank"><i class="fa fa-github"></i></a>
-              </li>
-              {% endif %}
-
-              {% if matched_user.profile.social_twitter %}
-              <li>
-                <a title="Twitter" href="{{matched_user.profile.social_twitter}}" target="_blank"><i class="fa fa-twitter"></i></a>
-              </li>
-              {% endif %}
-
-              {% if matched_user.profile.social_youtube %}
-              <li>
-                <a title="YouTube" href="{{matched_user.profile.social_youtube}}" target="_blank"><i class="fa fa-youtube"></i></a>
-              </li>
-              {% endif %}
-
-              {% if matched_user.profile.social_facebook %}
-              <li>
-                <a title="Facebook" href="{{matched_user.profile.social_facebook}}" target="_blank"><i class="fa fa-facebook"></i></a>
-              </li>
-              {% endif %}
-
-              {% if matched_user.profile.social_linkedin %}
-              <li>
-                <a title="Linkedin" href="{{matched_user.profile.social_linkedin}}" target="_blank"><i class="fa fa-linkedin"></i></a>
-              </li>
-              {% endif %}
-            </ul>
 
             <form action="{% url 'accept_like' matched_user.id %}" method="post">
               {% csrf_token %}

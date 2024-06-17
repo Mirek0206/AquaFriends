@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from AquaViewMatchShare.models import User, Matches
@@ -74,10 +75,13 @@ def lobby(request):
 def findBestMatch(request):
     user = request.user
     user_aquariums = Aquarium.objects.filter(user=user)
-    matched_user_ids = [user.id]
+    matched_user_ids = Matches.objects.filter(
+        Q(first_user=user) | Q(second_user=user)
+    ).values_list('first_user', 'second_user')
+    matched_user_ids = set(sum(matched_user_ids, ()))
 
     scores = {}
-    for other_user in User.objects.exclude(id__in=matched_user_ids):
+    for other_user in User.objects.exclude(id__in=matched_user_ids).exclude(id=user.id):
         other_user_aquariums = Aquarium.objects.filter(user=other_user)
         score = 0
 
@@ -109,44 +113,32 @@ def findBestMatch(request):
 @require_POST
 @login_required(login_url='login')
 def acceptMatch(request, user_id):
-    """
-    Accept a match by creating a new Match instance with the first_status set to True.
-
-    Args:
-        request (HttpRequest): The request instance.
-        user_id (int): The ID of the user to be matched with.
-
-    Returns:
-        HttpResponseRedirect: Redirect to the 'find_best_match' view.
-    """
-    # Get the other user
-    other_user = User.objects.get(id=user_id)
-
-    # Create a new Match object with first_status=True
-    match = Matches(first_user=request.user, second_user=other_user, first_status=True, second_status=None)
-    match.save()
+    other_user = get_object_or_404(User, id=user_id)
+    match, created = Matches.objects.get_or_create(
+        first_user=request.user,
+        second_user=other_user,
+        defaults={'first_status': True}
+    )
+    if not created:
+        match.first_status = True
+        match.save()
 
     return redirect('find_best_match')
+
 
 @require_POST
 @login_required(login_url='login')
 def rejectMatch(request, user_id):
-    """
-    Reject a match by creating a new Match instance with the first_status set to False.
-
-    Args:
-        request (HttpRequest): The request instance.
-        user_id (int): The ID of the user to be matched with.
-
-    Returns:
-        HttpResponseRedirect: Redirect to the 'find_best_match' view.
-    """
-    # Get the other user
-    other_user = User.objects.get(id=user_id)
-
-    # Create a new Match object with first_status=False
-    match = Matches(first_user=request.user, second_user=other_user, first_status=False, second_status=False)
-    match.save()
+    other_user = get_object_or_404(User, id=user_id)
+    match, created = Matches.objects.get_or_create(
+        first_user=request.user,
+        second_user=other_user,
+        defaults={'first_status': False, 'second_status': False}
+    )
+    if not created:
+        match.first_status = False
+        match.second_status = False
+        match.save()
 
     return redirect('find_best_match')
 
@@ -170,30 +162,22 @@ def getOldestLike(request):
 @require_POST
 @login_required(login_url='login')
 def acceptLike(request, user_id):
-    """
-    Accept a like by setting the second_status of the Match instance to True.
-
-    Args:
-        request (HttpRequest): The request instance.
-        user_id (int): The ID of the user who liked the currently logged-in user.
-
-    Returns:
-        HttpResponseRedirect: Redirect to the 'get_oldest_like' view.
-
-    Raises:
-        Http404: The match instance does not exist.
-    """
-    # Pobierz innego użytkownika
     other_user = get_object_or_404(User, id=user_id)
 
-    # Znajdź obiekt Matches, który spełnia określone kryteria
-    match = get_object_or_404(Matches,
-                              first_user=other_user,
-                              second_user=request.user,
-                              first_status=True,
-                              second_status=None)
+    # Retrieve all matching Matches instances
+    matches = Matches.objects.filter(
+        first_user=other_user,
+        second_user=request.user,
+        first_status=True,
+        second_status=None
+    )
 
-    # Zaktualizuj wartość second_status na True
+    if not matches:
+        raise Http404("Match not found.")
+
+    # For simplicity, just update the second_status of the first match found
+    # You might want to add logic here to select a specific match to accept
+    match = matches.first()
     match.second_status = True
     match.save()
 
