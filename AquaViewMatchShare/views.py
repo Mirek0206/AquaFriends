@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 from AquaViewMatchShare.models import User, Matches
 from .models import Message
 from AquaMaker.models import Aquarium
+from AquaLife.models import Fish
 from django.contrib import messages
 from django.db.models import Q
 from django.utils import timezone
@@ -98,16 +99,27 @@ def findBestMatch(request):
     if scores:
         best_match_user_id = max(scores, key=scores.get)
         best_match_user = User.objects.get(id=best_match_user_id)
+        best_match_aquariums = Aquarium.objects.filter(user=best_match_user)
+        
+        # Dodaj rybki dla każdego akwarium do kontekstu
+        aquarium_data = []
+        for aquarium in best_match_aquariums:
+            fishes = Fish.objects.filter(aquarium=aquarium)
+            aquarium_data.append({
+                'aquarium': aquarium,
+                'fishes': fishes
+            })
 
         context = {
             'best_match_user': best_match_user,
-            'aquariums': Aquarium.objects.filter(user=best_match_user)
+            'aquarium_data': aquarium_data
         }
     else:
         messages.error(request, 'Aktualnie nie ma więcej użytkowników, których moglibyśmy do Ciebie dopasować.')
         return redirect('account')
 
     return render(request, 'best_match.html', context)
+
 
 
 @require_POST
@@ -152,9 +164,21 @@ def getOldestLike(request):
         return redirect('account')
 
     oldest_match = matches.earliest('id')
+    matched_user = oldest_match.first_user
+    matched_user_aquariums = Aquarium.objects.filter(user=matched_user)
+
+    # Dodaj rybki dla każdego akwarium do kontekstu
+    aquarium_data = []
+    for aquarium in matched_user_aquariums:
+        fishes = Fish.objects.filter(aquarium=aquarium)
+        aquarium_data.append({
+            'aquarium': aquarium,
+            'fishes': fishes
+        })
+
     context = {
-        'matched_user': oldest_match.first_user,
-        'aquariums': Aquarium.objects.filter(user=oldest_match.first_user)
+        'matched_user': matched_user,
+        'aquarium_data': aquarium_data
     }
 
     return render(request, 'oldest_like.html', context)

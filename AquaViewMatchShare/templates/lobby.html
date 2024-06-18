@@ -55,22 +55,11 @@
             </a>
             {% endfor %}
           </div>
-          <!--
-          <div class="card__body dev" id="video-div" style="display: none;">
-            <div class="videos">
-              <video class="video-player" id="video-remote" autoplay playsinline></video>
-              <video class="video-player" id="video-local" autoplay playsinline></video>
-            </div>
-            <button class="btn btn--sub" id="mute-mic">Wycisz mikrofon</button>
-            <button class="btn btn--sub" id="turn-off-camera">Wyłącz kamerę</button>
-          </div>-->
         </div>
       </div>
 
       <div class="column column--1of2">
           <div class="chat-form">
-            <!--<button type="button" id="video-start-call" class="btn btn--sub btn--sm">Połączenie wideo</button>
-            <button type="button" id="video-end-call" class="btn btn--sub btn--sm" style="display: none;">Zakończ połączenie</button>-->
           </div>
           <div class="messages" id="messages">
               {% for friend in friends %}
@@ -92,7 +81,25 @@
   </div>
 </main>
 
-<!--<script type="text/javascript" src="{% static 'js/video.js' %}"></script> -->
+<style>
+  .message_card.selected {
+    border: 2px solid #57d974;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const messageCards = document.querySelectorAll('.message_card');
+
+    messageCards.forEach(card => {
+      card.addEventListener('click', function() {
+        messageCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+      });
+    });
+  });
+</script>
+
 <script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
 <script src="https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
 
