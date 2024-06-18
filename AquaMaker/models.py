@@ -1,24 +1,32 @@
-from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from simple_history.models import HistoricalRecords
+
 
 class Pump(models.Model):
-    power = models.CharField(max_length=50)
+    power = models.PositiveSmallIntegerField(default=10)
+    min_volume = models.PositiveSmallIntegerField(default=20)
+    max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Moc ({self.power})'
+        return f'Pump {self.power}W'
 
 class Light(models.Model):
-    power = models.CharField(max_length=50)
+    power = models.PositiveSmallIntegerField(default=10)
+    min_volume = models.PositiveSmallIntegerField(default=20)
+    max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Moc ({self.power})'
+        return f'Light {self.power}W'
 
 class Heater(models.Model):
-    power = models.CharField(max_length=50)
+    power = models.PositiveSmallIntegerField(default=10)
+    min_volume = models.PositiveSmallIntegerField(default=20)
+    max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Moc ({self.power})'
+        return f'Heater {self.power}W'
 
 class Filter(models.Model):
     type = models.CharField(max_length=50)
@@ -42,7 +50,8 @@ class Aquarium(models.Model):
     pump = models.ForeignKey('Pump', on_delete=models.CASCADE)
     heater = models.ForeignKey('Heater', on_delete=models.CASCADE)
     filters = models.ManyToManyField(Filter, blank=True)
+    history = HistoricalRecords(m2m_fields=[filters])
     decorators = models.ManyToManyField(Decorator, blank=True)
-    
+
     def __str__(self) -> str:
         return str(self.name)

@@ -35,10 +35,12 @@ INSTALLED_APPS = [
     #
     "AquaAccount.apps.AquaaccountsConfig",
     "AquaMaker.apps.AquamakerConfig",
-    "AquaAdminPanel.apps.AquaadminpanelConfig",
     "AquaLife.apps.AqualifeConfig",
     "AquaViewMatchShare.apps.AquaViewMatchShareConfig",
+    "AquaMonitor.apps.AquamonitorConfig",
+    "AquaAdminPanel.apps.AquaadminpanelConfig",
     #
+    "simple_history",
     "django_select2",
 ]
 
@@ -50,16 +52,18 @@ CHANNEL_LAYERS = {
     }
 }
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    #
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    #
+    "simple_history.middleware.HistoryRequestMiddleware",
+    #
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = 'AquaFriends.urls'
