@@ -47,11 +47,14 @@
                   <div onclick="toggleDetails('details-{{ aquarium_info.aquarium.id }}')" class="aquariums-list">
                       {{ aquarium_info.aquarium.name }}
                       <div>
-                        <a href="{% url 'AquaMonitor:user_aquariums_and_parameters' %}" class="avatar--md">
+                        <a href="{% url 'AquaMonitor:user_aquariums_and_parameters' aquarium_info.aquarium.id %}" class="avatar--md">
                           <img src="{% static 'images/measurement.png' %}" alt="Sprawdź parametry"/>
                         </a>
                         <a href="{% url 'AquaLife:edit_aquarium' aquarium_info.aquarium.id %}" class="avatar--md">
                           <img src="{% static 'images/parameters.png' %}" alt="Dodaj akwarium"/>
+                        </a>
+                        <a href="{% url 'AquaMaker:history_aquarium' aquarium_info.aquarium.id %}" class="avatar--md">
+                          <img src="{% static 'images/measurement.png' %}" alt="Historia"/>
                         </a>
                       </div>
                   </div>
