@@ -68,9 +68,11 @@ class Command(BaseCommand):
 
         # create filters
         aquarium_filters = [
-            "Filtr wewnętrzny do akwarium 10-40l",
+            "Filtr wewnętrzny do akwarium do 40l",
             "Filtr wewnętrzny do akwarium 50-80l",
             "Filtr wewnętrzny do akwarium 100-160l"
+            "Filtr wewnętrzny do akwarium 160-240l",
+            "Filtr wewnętrzny do akwarium od 240l"
         ]
 
         for single_filter in aquarium_filters:
@@ -79,47 +81,53 @@ class Command(BaseCommand):
 
         # create heaters
         aquarium_heaters = [
-            "75W",
-            "100W",
-            "150W",
-            "200W",
-            "25W"
-            "50W"
-            "300W"
+            Heater(power=10, min_volume=0, max_volume=20),
+            Heater(power=20, min_volume=20, max_volume=40),
+            Heater(power=35, min_volume=40, max_volume=70),
+            Heater(power=60, min_volume=70, max_volume=90),
+            Heater(power=80, min_volume=90, max_volume=110),
+            Heater(power=100, min_volume=110, max_volume=130),
+            Heater(power=120, min_volume=130, max_volume=150),
+            Heater(power=140, min_volume=150, max_volume=170),
+            Heater(power=150, min_volume=170, max_volume=200),
+            Heater(power=160, min_volume=200, max_volume=220),
+            Heater(power=170, min_volume=220, max_volume=240),
+            Heater(power=200, min_volume=240)
         ]
 
-        for single_heater in aquarium_heaters:
-            heater_model = Heater(power=single_heater)
-            heater_model.save()
+        for h in aquarium_heaters:
+            h.save()
 
         # create pumps
         aquarium_pumps = [
-            "12W",
-            "20W",
-            "25W",
-            "30W",
-            "40W"
+            Pump(power=12, min_volume=0, max_volume=30),
+            Pump(power=18, min_volume=30, max_volume=50),
+            Pump(power=24, min_volume=50, max_volume=70),
+            Pump(power=30, min_volume=70, max_volume=100),
+            Pump(power=36, min_volume=100, max_volume=130),
+            Pump(power=42, min_volume=130, max_volume=160),
+            Pump(power=45, min_volume=160, max_volume=180),
+            Pump(power=48, min_volume=180, max_volume=200),
+            Pump(power=50, min_volume=200, max_volume=220),
+            Pump(power=55, min_volume=220, max_volume=240),
+            Pump(power=70, min_volume=240)
         ]
 
-        for single_pump in aquarium_pumps:
-            pump_model = Pump(power=single_pump)
-            pump_model.save()
+        for p in aquarium_pumps:
+            p.save()
 
         # create lights
         aquarium_lights = [
-            "10W LED biała",
-            "10W LED czarna",
-            "16W LED biała 40-60cm",
-            "16W LED czarna 40-60cm",
-            "32W biała 80-100cm",
-            "32W czarna 80-100cm",
-            "10W belka LED biała 50-70cm",
-            "36W belka LED biała 100-120cm"
+            Light(power=10, min_volume=0, max_volume=50),
+            Light(power=12, min_volume=50, max_volume=70),
+            Light(power=18, min_volume=70, max_volume=120),
+            Light(power=24, min_volume=120, max_volume=180),
+            Light(power=30, min_volume=180, max_volume=240),
+            Light(power=40, min_volume=240)
         ]
 
-        for single_light in aquarium_lights:
-            light_model = Light(power=single_light)
-            light_model.save()
+        for l in aquarium_lights:
+            l.save()
 
         while creations < requested:
             for data in user_generator.generate(requested - creations):
