@@ -1318,3 +1318,262 @@ img {
   transform: none; /* Resetuje właściwość transform */
   text-align: center; /* Przywraca wyrównanie tekstu */
 }
+
+/*=======================
+  Chat
+========================*/
+
+.message_card {
+  --primary-text: #050505;
+  --secondary-text: #65676b;
+  --bg-color: var(--color-white);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-color);
+  padding: 10px 10px 10px 10px;
+  border-radius: 7px;
+  border: 2px solid var(--color-light);
+  margin: 1rem;
+  box-shadow: 0 3px 15px 0 rgba(#000, 0.05);
+
+  h3 {
+    color: var(--primary-text);
+    font-size: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  p,
+  time,
+  .separator {
+    font-size: 13px;
+    color: var(--secondary-text);
+  }
+
+  &.is-dark {
+    --primary-text: #e4e6eb;
+    --secondary-text: #b0b3b8;
+    --bg-color: var(--color-sub-light);
+  }
+
+  & + & {
+    margin-top: 1rem;
+  }
+}
+
+.message_card__avatar {
+  position: relative;
+  display: flex;
+  margin-right: 12px;
+
+  .message_badge {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    width: 10px;
+    height: 10px;
+    background: var(--color-success);
+    border-radius: 50%;
+  }
+}
+
+.message_card__avatar--multiple {
+  display: block;
+  width: 56px;
+  height: 56px;
+  position: relative;
+
+  .avatar-1 {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .message_avatar-2 {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+
+  .message_badge {
+    right: 6px;
+    bottom: 6px;
+  }
+
+  .message_border {
+    stroke-width: 2;
+  }
+}
+
+.message_card__avatar--multiple-2 {
+  display: grid;
+  outline: solid 1px;
+
+  svg:nth-of-type(1) {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  svg:nth-of-type(2) {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+}
+
+.message_card__avatar.sol-1 {
+  position: relative;
+  img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+  }
+
+  .message_border {
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    opacity: 0.1;
+  }
+
+  .message_badge {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--color-white);
+  }
+}
+
+.message_border {
+  stroke-width: 3;
+  stroke: rgba(0, 0, 0, 0.1);
+  fill: none;
+}
+
+.message_card__seen {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.message_new {
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-main-light);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.message_card__content {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+.message_card__content__start {
+  flex: 1;
+  outline-offset: 2px;
+  min-width: 0;
+
+  > div {
+    display: flex;
+    align-items: center;
+    max-width: fit-content;
+  }
+
+  h4,
+  p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.message_separator {
+  margin: 0 4px;
+}
+
+.message_card__content__end {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 12px;
+}
+
+#messages {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.user_message, .friend_message {
+  max-width: 45%;
+  word-break: break-all;
+  margin-bottom: 0.2rem;
+}
+
+.user_message {
+  align-self: flex-end;
+}
+
+.chat-form {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 1rem;
+}
+
+.chat-form #chat-message-input {
+  height: 30px;
+  margin-right: 10px;
+  flex-grow: 1;
+}
+
+.chat-form #chat-message-submit {
+  margin-left: 10px;
+  height: 30px;
+}
+
+.progressBarContainer{
+  margin-bottom: 20px;
+  width: 14rem;
+  height: 5rem;
+  display: flex;
+  align-items: flex-start;
+  display: flex;
+  float: right;
+}
+
+.numOfLikes {
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  display: flex;
+  margin-left: 12rem;
+  margin-top: -3.5rem;
+  background-color: var(--color-main-light);
+  border-radius: 5rem;
+  justify-content: center;
+  color: var(--color-sub);
+}
+
+.numOfMessages {
+  width: 2rem;
+  height: 2rem;
+  position: relative;
+  display: flex;
+  margin-left: -7rem;
+  margin-top: -2.5rem;
+  background-color: var(--color-main-light);
+  border-radius: 5rem;
+  justify-content: center;
+  color: var(--color-sub);
+}

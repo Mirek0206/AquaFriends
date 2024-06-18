@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('AquaAccount.urls')),
     path('', include('AquaMaker.urls')),
     path('', include('AquaLife.urls')),
+    path('', include('AquaAdminPanel.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -57,11 +57,20 @@
                         <p><b>Oświetlenie:</b> {{ aquarium_info.aquarium.light }}</p>
                         <p><b>Pompa:</b> {{ aquarium_info.aquarium.pump }}</p>
                         <p><b>Grzałka:</b> {{ aquarium_info.aquarium.heater }}</p>
-                        <p><b>Filtry:</b>
+                        <p><b>Filtry:</b> 
+                          <ul style="list-style-type: none;">
                             {% for filter in aquarium_info.aquarium.filters.all %}
-                                {{ filter }},
+                              <li><p>{{ filter }}<p></li>
                             {% endfor %}
+                          </ul>
                         </p>
+                        <p><b>Dekoracje:</b> 
+                          <ul style="list-style-type: none;">
+                          {% for decorator in aquarium_info.aquarium.decorators.all %}
+                            <li><p>{{ decorator }}</p></li>
+                          {% endfor %}
+                          </ul>
+                      </p>
                       </div>
                       <div>
                         <div class="formHead">

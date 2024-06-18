@@ -5,28 +5,40 @@ from simple_history.models import HistoricalRecords
 
 
 class Pump(models.Model):
-    power = models.CharField(max_length=50)
+    power = models.PositiveSmallIntegerField(default=10)
+    min_volume = models.PositiveSmallIntegerField(default=20)
+    max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Pump ({self.power})'
+        return f'Pump {self.power}W'
 
 class Light(models.Model):
-    power = models.CharField(max_length=50)
+    power = models.PositiveSmallIntegerField(default=10)
+    min_volume = models.PositiveSmallIntegerField(default=20)
+    max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Light ({self.power})'
+        return f'Light {self.power}W'
 
 class Heater(models.Model):
-    power = models.CharField(max_length=50)
+    power = models.PositiveSmallIntegerField(default=10)
+    min_volume = models.PositiveSmallIntegerField(default=20)
+    max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Heater ({self.power})'
+        return f'Heater {self.power}W'
 
 class Filter(models.Model):
     type = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'Filter ({self.type})'
+        return f'Filtr ({self.type})'
+    
+class Decorator(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'Filter ({self.name})'
 
 class Aquarium(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -39,6 +51,7 @@ class Aquarium(models.Model):
     heater = models.ForeignKey('Heater', on_delete=models.CASCADE)
     filters = models.ManyToManyField(Filter, blank=True)
     history = HistoricalRecords(m2m_fields=[filters])
+    decorators = models.ManyToManyField(Decorator, blank=True)
 
     def __str__(self) -> str:
         return str(self.name)
