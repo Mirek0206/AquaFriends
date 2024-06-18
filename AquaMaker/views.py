@@ -1,9 +1,9 @@
 from __future__ import annotations
-
-from itertools import chain
-
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from itertools import chain
 
 from AquaLife.models import HistoricalFish
 
@@ -20,7 +20,8 @@ def create_aquarium(request):
             aquarium.user = request.user
             aquarium.save()
             form.save_m2m()  # To save the many-to-many relationship
-            return redirect('account')  # Załóżmy, że masz widok listy akwariów
+            messages.success(request, 'Pomyślnie utworzono akwarium!')
+            return redirect('account')
     else:
         form = AquariumForm(user=request.user)
     return render(request, 'AquaMaker/create_aquarium.html', {'form': form})

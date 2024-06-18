@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- Main Section -->
+<main class="settingsPage profile my-md">
+  <div class="container">
+    <div class="layout">
+      <div class="column column--1of3">
+        <div class="card text-center">
+          <div class="card__body dev">
+            <h2 class="dev__username">Twoje akwaria</h2>
+            {% for aquarium in aquariums %}
+                <a style="all: initial; cursor: pointer" href="{% url 'AquaMonitor:user_aquariums_and_parameters' aquarium.id %}">
+                    <div class="message_card">
+                        <h3>{{ aquarium.name }}</h3>
+                    </div>
+                </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="column column--2of3">
+        <div class="card text-center">
+            <div class="card__body dev">
+            {% if selected_aquarium %}
+                <h2 class="dev__username">Historia parametrów dla {{ selected_aquarium.name }}</h2>
+                {% for parameter in parameters_history %}
+                <div class="message_card">
+                    <p><b>Data:</b> {{ parameter.date|date:"d.m.Y H:i" }}</p>
+                    <p><b>NO2:</b> {{ parameter.no2 }}</p>
+                    <p><b>NO3:</b> {{ parameter.no3 }}</p>
+                    <p><b>GH:</b> {{ parameter.gh }}</p>
+                    <p><b>KH:</b> {{ parameter.kh }}</p>
+                    <p><b>pH:</b> {{ parameter.ph }}</p>
+                </div>
+                {% empty %}
+                    <h4>Historia jest pusta.</h4>
+                {% endfor %}
+                <div class="settings__saveBtn">
+                    <a class="btn tag--main btn--main my-md tag--pill" href="{% url 'AquaMonitor:add_water_parameter' selected_aquarium.id %}">Dodaj pomiary</a>
+                </div>
+            {% else %}   
+                <h2 class="dev__username">Wybierz akwarium</h2>
+            {% endif %}
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "AquaAccount.apps.AquaaccountsConfig",
     "AquaMaker.apps.AquamakerConfig",
     "AquaLife.apps.AqualifeConfig",
+    "AquaMonitor.apps.AquamonitorConfig",
     "AquaAdminPanel.apps.AquaadminpanelConfig",
     #
     "simple_history",
