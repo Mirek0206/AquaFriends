@@ -47,6 +47,7 @@
                   <div onclick="toggleDetails('details-{{ aquarium_info.aquarium.id }}')" class="aquariums-list">
                       {{ aquarium_info.aquarium.name }}
                       <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'AquaLife:edit_aquarium' aquarium_info.aquarium.id %}">Edytuj</a>
+                      <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'AquaMaker:history_aquarium' aquarium_info.aquarium.id %}">Historia</a>
                   </div>
                   <div id="details-{{ aquarium_info.aquarium.id }}" class="aquarium-details">
                       <div>
