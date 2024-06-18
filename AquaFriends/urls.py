@@ -9,6 +9,7 @@ urlpatterns = [
     path('', include('AquaMaker.urls')),
     path('', include('AquaLife.urls')),
     path('', include('AquaAdminPanel.urls')),
+    path('', include('AquaViewMatchShare.urls')),
     path('', include('AquaMonitor.urls')),
 ]
 

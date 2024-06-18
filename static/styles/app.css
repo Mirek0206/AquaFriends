@@ -118,7 +118,6 @@ img {
   align-items: center;
   list-style: none;
   gap: 6.5rem;
-  si
 }
 
 .subHeader__menuItem > a {
@@ -1448,6 +1447,9 @@ img {
   stroke-width: 3;
   stroke: rgba(0, 0, 0, 0.1);
   fill: none;
+}
+.message_card.selected {
+  border: 2px solid #57d974;
 }
 
 .message_card__seen {
