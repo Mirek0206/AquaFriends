@@ -1,5 +1,5 @@
 from django.contrib import admin
-from AquaAccount.models import Message
+from AquaViewMatchShare.models import Message
 from AquaAdminPanel.admin import AquaAdminPanel
 
 # Register your models here.
