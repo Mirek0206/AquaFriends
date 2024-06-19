@@ -79,6 +79,31 @@ class Command(BaseCommand):
             species.conflict.set(conflicts)
             species.save()
 
+        # create aquarium parameters
+        AquariumParametrs(
+            minimum_no2=0,
+            maximum_no2=5,
+            too_low_no2_hint="NO2 za niskie, zwiększ cyrkulację",
+            too_high_no2_hint="NO2 za wysokie, wykonaj częściową wymianę wody",
+            minimum_no3=0,
+            maximum_no3=20,
+            too_low_no3_hint="NO3 za niskie, dodaj nawóz",
+            too_high_no3_hint="NO3 za wysokie, wykonaj częściową wymianę wody",
+            minimum_gh=4,
+            maximum_gh=12,
+            too_low_gh_hint="GH za niskie, dodaj mineralizator",
+            too_high_gh_hint="GH za wysokie, wymień część wody na miękką",
+            minimum_kh=3,
+            maximum_kh=8,
+            too_low_kh_hint="KH za niskie, dodaj węglan sodu",
+            too_high_kh_hint="KH za wysokie, wymień część wody",
+            minimum_ph=6.5,
+            maximum_ph=7.5,
+            too_low_ph_hint="pH za niskie, dodaj bufor pH",
+            too_high_ph_hint="pH za wysokie, dodaj CO2 lub kwas fosforowy"
+        ).save()
+
+
         # create filters
         aquarium_filters = [
             "Filtr wewnętrzny do akwarium do 40l",

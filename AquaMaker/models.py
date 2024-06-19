@@ -52,3 +52,34 @@ class Aquarium(models.Model):
     
     def __str__(self) -> str:
         return str(self.name)
+
+class AquariumParametrs(models.Model):
+    # NO2
+    minimum_no2 = models.PositiveSmallIntegerField(default=0)
+    maximum_no2 = models.PositiveSmallIntegerField(default=10)
+    too_low_no2_hint = models.CharField(max_length=100)
+    too_high_no2_hint = models.CharField(max_length=100)
+
+    # NO3
+    minimum_no3 = models.PositiveSmallIntegerField(default=0)
+    maximum_no3 = models.PositiveSmallIntegerField(default=10)
+    too_low_no3_hint = models.CharField(max_length=100)
+    too_high_no3_hint = models.CharField(max_length=100)
+    
+    # GH
+    minimum_gh = models.PositiveSmallIntegerField(default=0)
+    maximum_gh = models.PositiveSmallIntegerField(default=10)
+    too_low_gh_hint = models.CharField(max_length=100)
+    too_high_gh_hint = models.CharField(max_length=100)
+    
+    # KH
+    minimum_kh = models.PositiveSmallIntegerField(default=0)
+    maximum_kh = models.PositiveSmallIntegerField(default=10)
+    too_low_kh_hint = models.CharField(max_length=100)
+    too_high_kh_hint = models.CharField(max_length=100)
+    
+    # pH
+    minimum_ph = models.PositiveSmallIntegerField(default=0)
+    maximum_ph = models.PositiveSmallIntegerField(default=10)
+    too_low_ph_hint = models.CharField(max_length=100)
+    too_high_ph_hint = models.CharField(max_length=100)
