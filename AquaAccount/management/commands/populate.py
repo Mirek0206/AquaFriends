@@ -7,6 +7,7 @@ import random
 from django.contrib.auth.models import User
 from AquaLife.models import Species, Fish
 from AquaMaker.models import *
+from AquaMonitor.models import *
 
 class Command(BaseCommand):
     """
@@ -103,6 +104,18 @@ class Command(BaseCommand):
             too_high_ph_hint="pH za wysokie, dodaj CO2 lub kwas fosforowy"
         ).save()
 
+        # create types of exceptional situations
+        exceptional_situation_types = [
+            SituationType(name="Śmierć rybki", hint="Sprawdź parametry wody i zdrowie pozostałych rybek"),
+            SituationType(name="Awaria filtra", hint="Natychmiast napraw filtr lub wymień na nowy"),
+            SituationType(name="Wzrost glonów", hint="Zmniejsz oświetlenie i dodaj środki przeciwglonowe"),
+            SituationType(name="Rybka chora", hint="Przenieś rybkę do osobnego akwarium i zastosuj odpowiednie leki"),
+            SituationType(name="Przepełnienie akwarium", hint="Przenieś część rybek do innego akwarium lub zwiększ pojemność"),
+            SituationType(name="Utrata roślin", hint="Sprawdź oświetlenie i nawożenie")
+        ]
+
+        for s in exceptional_situation_types:
+            s.save()
 
         # create filters
         aquarium_filters = [
@@ -256,6 +269,22 @@ class Command(BaseCommand):
                         species=random.choice(Species.objects.all()),
                         aquarium=third_aquarium
                     )
+
+                # add a random exceptional situation to every aquarium
+                ExceptionalSituation(
+                    aquarium=first_aquarium,
+                    situation_type=random.choice(SituationType.objects.all())
+                ).save()
+
+                ExceptionalSituation(
+                    aquarium=second_aquarium,
+                    situation_type=random.choice(SituationType.objects.all())
+                ).save()
+
+                ExceptionalSituation(
+                    aquarium=third_aquarium,
+                    situation_type=random.choice(SituationType.objects.all())
+                ).save()
 
                 # save all aquariums
                 first_aquarium.save()
