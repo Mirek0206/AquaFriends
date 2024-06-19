@@ -4,6 +4,7 @@ from AquaMaker.models import Aquarium
 
 class Species(models.Model):
     name = models.CharField(max_length=50)
+    conflict = models.ManyToManyField("Species", blank=True)
 
     def __str__(self):
         return self.name
@@ -18,4 +19,3 @@ class Fish(models.Model):
 
     def __str__(self):
         return self.name
-

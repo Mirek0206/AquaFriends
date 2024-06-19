@@ -66,11 +66,24 @@ class Command(BaseCommand):
             fish_species_model = Species(name=single_species)
             fish_species_model.save()
 
+        # create 2 conflicts
+        for species in Species.objects.all():
+            conflicts = set()
+
+            while len(conflicts) < 2:
+                random_species = random.choice(Species.objects.all())
+                
+                if random_species != species and random_species not in conflicts:
+                    conflicts.add(random_species)
+
+            species.conflict.set(conflicts)
+            species.save()
+
         # create filters
         aquarium_filters = [
             "Filtr wewnętrzny do akwarium do 40l",
             "Filtr wewnętrzny do akwarium 50-80l",
-            "Filtr wewnętrzny do akwarium 100-160l"
+            "Filtr wewnętrzny do akwarium 100-160l",
             "Filtr wewnętrzny do akwarium 160-240l",
             "Filtr wewnętrzny do akwarium od 240l"
         ]
