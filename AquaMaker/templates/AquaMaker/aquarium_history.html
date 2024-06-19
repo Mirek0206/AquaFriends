@@ -9,7 +9,14 @@
       <div class="column column--1of3">
         <div class="card text-center">
           <div class="card__body dev">
-            <h2 class="dev__username">Historia akwarium<br> {{ aquarium.name }}</h2>
+            <h2 class="dev__username">Twoje akwaria</h2>
+            {% for aquarium in aquariums %}
+                <a style="all: initial; cursor: pointer" href="{% url 'AquaMaker:history_aquarium' aquarium.id %}">
+                    <div class="message_card">
+                        <h3>{{ aquarium.name }}</h3>
+                    </div>
+                </a>
+            {% endfor %}
           </div>
         </div>
       </div>
@@ -17,17 +24,17 @@
       <div class="column column--2of3">
         <div class="card text-center">
             <div class="card__body dev">
-                <ul>
+              <h2 class="dev__username">Historia akwarium: {{ selected_aquarium.name }}</h2>
 
                 {% for record in history %}
-                    <li>
-                        {{ record.history_date }} - {{ record.get_history_type_display }} - {{ record }}
-                    </li>
+                <div class="message_card">
+                  <p><b>Data:&nbsp;&nbsp;</b> {{ record.history_date|date:"d.m.Y H:i" }}</p>
+                  <p> {{ record.get_history_type_display }}</p>
+                  <p> {{ record }}</p>
+                </div>
                 {% empty %}
                     <h4>Historia jest pusta.</h4>
                 {% endfor %}
-            </ul>
-
             </div>
           </div>
       </div>

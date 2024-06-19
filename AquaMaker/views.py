@@ -64,13 +64,14 @@ def aquarium_history(request, pk: int):
         for event in delta.changes:
             if event.field == "filters":
                 old_filters = format_filter_list(old_record.filters.all())
+                old_filters = old_filters if old_filters else "BRAK"
                 new_filters = format_filter_list(new_record.filters.all())
                 history.append(
-                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - { _HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{old_filters}' na '{new_filters}'"
+                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - { _HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{old_filters}' na '{new_filters}'",
                 )
             else:
                 history.append(
-                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - {_HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{event.old}' na '{event.new}'"
+                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - {_HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{event.old}' na '{event.new}'",
                 )
         change = change.prev_record
 
@@ -103,7 +104,8 @@ def aquarium_history(request, pk: int):
         request,
         "AquaMaker/aquarium_history.html",
         {
-            "aquarium": aquarium,
+            "aquariums": Aquarium.objects.filter(user=request.user),
+            "selected_aquarium": aquarium,
             "history": combined_history,
         },
     )
