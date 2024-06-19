@@ -43,7 +43,16 @@ def format_filter_list(filters):
 
 @login_required(login_url="login")
 def aquarium_history(request, pk: int):
-    aquarium = Aquarium.objects.get(id=pk)
+    try:
+        aquarium = Aquarium.objects.get(id=pk)
+    except Aquarium.DoesNotExist:
+        messages.error(request, "Historia dla tego akwarium nie istnieje !")
+        return redirect("account")
+
+    if aquarium.user != request.user:
+        messages.error(request, "To akwarium nie naley do Ciebie !")
+        return redirect("account")
+
     history: list[str] = []
 
     change = aquarium.history.first()
