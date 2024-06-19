@@ -1,4 +1,5 @@
 from __future__ import annotations
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -8,7 +9,7 @@ from itertools import chain
 from AquaLife.models import HistoricalFish
 
 from .forms import AquariumForm
-from .models import Aquarium
+from .models import Aquarium, Heater, Light, Pump
 
 
 @login_required(login_url='login')
@@ -98,3 +99,22 @@ def aquarium_history(request, pk: int):
             "history": combined_history,
         },
     )
+
+@login_required(login_url="login")
+def get_min_power_devices(request):
+    x = float(request.GET.get('x', 0))
+    y = float(request.GET.get('y', 0))
+    z = float(request.GET.get('z', 0))
+    volume = x * y * z / 1000  # Oblicz objętość w litrach
+
+    min_pump = Pump.objects.filter(min_volume__lte=volume, max_volume__gte=volume).order_by('power').first()
+    min_heater = Heater.objects.filter(min_volume__lte=volume, max_volume__gte=volume).order_by('power').first()
+    min_light = Light.objects.filter(min_volume__lte=volume, max_volume__gte=volume).order_by('power').first()
+
+    response_data = {
+        'min_pump_power': f'{min_pump.power} W' if min_pump else 'Brak odpowiednich pomp',
+        'min_heater_power': f'{min_heater.power} W' if min_heater else 'Brak odpowiednich grzałek',
+        'min_light_power': f'{min_light.power} W' if min_light else 'Brak odpowiednich świateł',
+    }
+
+    return JsonResponse(response_data)
