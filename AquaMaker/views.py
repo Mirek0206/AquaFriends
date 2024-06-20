@@ -1,13 +1,15 @@
 from __future__ import annotations
-from django.shortcuts import render, redirect
+
+from itertools import chain
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from itertools import chain
 
 from AquaLife.models import HistoricalFish
+from AquaMonitor.models import ExceptionalSituation
 
-from .forms import AquariumForm
+from .forms import AquariumForm, HistoryForm
 from .models import Aquarium
 
 
@@ -53,6 +55,10 @@ def aquarium_history(request, pk: int):
         messages.error(request, "To akwarium nie naley do Ciebie !")
         return redirect("account")
 
+    form = HistoryForm(request.POST)
+    if request.method == "POST" and form.is_valid():
+        ...
+
     history: list[str] = []
 
     change = aquarium.history.first()
@@ -89,9 +95,15 @@ def aquarium_history(request, pk: int):
                 f"{fish_history_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - Usunięto rybę '{fish_history_record.name}' ({fish_history_record.species})",
             )
 
+    # Get ExceptionalSituations
+    es_history = [
+        f"{situation.date.strftime('%Y-%m-%d %H:%M:%S')} - {situation.situation_type}"
+        for situation in ExceptionalSituation.objects.filter(aquarium=aquarium)
+    ]
+
     # Combine and sort the history
     combined_history = sorted(
-        chain(history, fish_history),
+        chain(history, fish_history, es_history),
         key=lambda x: x.split(" - ")[0],
         reverse=True,
     )
@@ -107,5 +119,6 @@ def aquarium_history(request, pk: int):
             "aquariums": Aquarium.objects.filter(user=request.user),
             "selected_aquarium": aquarium,
             "history": combined_history,
+            "form": form,
         },
     )
