@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from itertools import chain
 
 from django.contrib import messages
@@ -42,6 +43,24 @@ _HISTORY_LABELS: dict[str, str] = {
 def format_filter_list(filters):
     return ", ".join([str(f.filter) for f in filters])
 
+def filter_history_by_date(history, start_date_str, end_date_str):
+    start_date = datetime.strptime(str(start_date_str), "%Y-%m-%d")
+    end_date = datetime.strptime(str(end_date_str), "%Y-%m-%d").replace(
+        hour=23,
+        minute=59,
+        second=59,
+    )
+
+    filtered_history = []
+    for entry in history:
+        date_str = entry.split(" - ")[0]
+        entry_date = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+
+        if start_date <= entry_date <= end_date:
+            filtered_history.append(entry)
+
+    return filtered_history
+
 
 @login_required(login_url="login")
 def aquarium_history(request, pk: int):
@@ -55,10 +74,7 @@ def aquarium_history(request, pk: int):
         messages.error(request, "To akwarium nie naley do Ciebie !")
         return redirect("account")
 
-    form = HistoryForm(request.POST)
-    if request.method == "POST" and form.is_valid():
-        ...
-
+    form = HistoryForm()
     history: list[str] = []
 
     change = aquarium.history.first()
@@ -111,6 +127,15 @@ def aquarium_history(request, pk: int):
     combined_history.append(
         f"{aquarium.history.last().history_date.strftime('%Y-%m-%d %H:%M:%S')} - Dodano akwarium",
     )
+
+    if request.method == "POST":
+        form = HistoryForm(request.POST)
+        if form.is_valid():
+            combined_history = filter_history_by_date(
+                combined_history,
+                form.cleaned_data["start_date"],
+                form.cleaned_data["end_date"],
+            )
 
     return render(
         request,
