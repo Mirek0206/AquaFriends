@@ -2,6 +2,7 @@
 
 import django.core.validators
 import django.db.models.deletion
+import simple_history.models
 from django.conf import settings
 from django.db import migrations, models
 
@@ -97,5 +98,9 @@ class Migration(migrations.Migration):
                 ('light', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='AquaMaker.light')),
                 ('pump', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='AquaMaker.pump')),
             ],
+            options={
+                'verbose_name': 'HistoricalAquarium_filters',
+            },
+            bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
     ]

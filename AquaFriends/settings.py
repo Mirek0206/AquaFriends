@@ -12,6 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET')
+#SECRET_KEY = "maresyp to kox <3"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -34,30 +35,35 @@ INSTALLED_APPS = [
     #
     "AquaAccount.apps.AquaaccountsConfig",
     "AquaMaker.apps.AquamakerConfig",
-    "AquaAdminPanel.apps.AquaadminpanelConfig",
     "AquaLife.apps.AqualifeConfig",
+    "AquaViewMatchShare.apps.AquaViewMatchShareConfig",
     "AquaMonitor.apps.AquamonitorConfig",
+    "AquaAdminPanel.apps.AquaadminpanelConfig",
     #
+    "simple_history",
     "django_select2",
 ]
 
-ASGI_APPLICATION = 'CodeHub.asgi.application'
+ASGI_APPLICATION = 'AquaFriends.asgi.application'
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer'
     }
 }
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    #
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    #
+    "simple_history.middleware.HistoryRequestMiddleware",
+    #
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = 'AquaFriends.urls'
@@ -75,8 +81,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                #'Users.context_processors.count_matches',
-                #'Chat.context_processors.count_unread_messages'
+                'AquaViewMatchShare.context_processors.count_matches',
+                'AquaViewMatchShare.context_processors.count_unread_messages'
             ],
         },
     },
