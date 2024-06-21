@@ -46,10 +46,10 @@
                 </div>
               </form>
               {% for record in history %}
-              <div class="message_card">
-                <p><b>Data:&nbsp;&nbsp;</b> {{ record.history_date|date:"d.m.Y H:i" }}</p>
-                <p> {{ record.get_history_type_display }}</p>
-                <p> {{ record }}</p>
+              <div style="text-align: left;" class="message_card">
+                <div style="width: 28%;"><p><b>Data:</b> {{ record.history_date|date:"d.m.Y H:i" }}</p></div>
+                <div><p> {{ record.get_history_type_display }}</p></div>
+                <div><p> {{ record }}</p></div>
               </div>
               {% empty %}
                   <h4>Historia jest pusta.</h4>
