@@ -10,7 +10,7 @@ class Pump(models.Model):
     max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Pump {self.power}W'
+        return f'{self.power}W'
 
 class Light(models.Model):
     power = models.PositiveSmallIntegerField(default=10)
@@ -18,7 +18,7 @@ class Light(models.Model):
     max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Light {self.power}W'
+        return f'{self.power}W'
 
 class Heater(models.Model):
     power = models.PositiveSmallIntegerField(default=10)
@@ -26,19 +26,19 @@ class Heater(models.Model):
     max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Heater {self.power}W'
+        return f'{self.power}W'
 
 class Filter(models.Model):
     type = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'Filtr ({self.type})'
+        return f'{self.type}'
     
 class Decorator(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return f'Filter ({self.name})'
+        return f'{self.name}'
 
 class Aquarium(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

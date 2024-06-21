@@ -47,7 +47,7 @@ class FishForm(forms.ModelForm):
         fields = ['name', 'age', 'species']
         labels = {
             'name': 'Imię',
-            'age': 'Wiek',
+            'age': 'Wiek [msc]',
             'species': 'Gatunek',
         }
         widgets = {

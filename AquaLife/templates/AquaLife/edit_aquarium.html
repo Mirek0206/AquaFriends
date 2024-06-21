@@ -53,6 +53,10 @@
                     <label for="formInput#text">{{field.label}}</label>
                     {{field}}
 
+                    {% if field.name == "species" %}
+                    <p id="{{field.name}}-hint" style="color: var(--color-error);"></p>
+                    {% endif %}
+
                     {% for error in field.errors %}
                     <p style="color: red;">{{error}}</p>
                     {% endfor %}
@@ -167,6 +171,24 @@
     xInput.addEventListener('input', updateHints);
     yInput.addEventListener('input', updateHints);
     zInput.addEventListener('input', updateHints);
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const speciesSelect = document.querySelector('select[name="species"]');
+    const speciesHint = document.getElementById('species-hint');
+    const aquariumId = {{ aquarium.id }};
+
+    speciesSelect.addEventListener('change', function () {
+        const speciesId = this.value;
+
+        fetch(`{% url 'AquaLife:check_species_conflicts' %}?species_id=${speciesId}&aquarium_id=${aquariumId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.conflicts && data.conflicts.length > 0) {
+                    speciesHint.textContent = `Konfliktujące gatunki: ${data.conflicts.join(', ')}`;
+                }
+            });
+    });
   });
 </script>
 {% endblock content %}
