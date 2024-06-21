@@ -10,7 +10,7 @@ class Pump(models.Model):
     max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Pump {self.power}W'
+        return f'{self.power}W'
 
 class Light(models.Model):
     power = models.PositiveSmallIntegerField(default=10)
@@ -18,7 +18,7 @@ class Light(models.Model):
     max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Light {self.power}W'
+        return f'{self.power}W'
 
 class Heater(models.Model):
     power = models.PositiveSmallIntegerField(default=10)
@@ -26,19 +26,19 @@ class Heater(models.Model):
     max_volume = models.PositiveSmallIntegerField(default=40)
 
     def __str__(self):
-        return f'Heater {self.power}W'
+        return f'{self.power}W'
 
 class Filter(models.Model):
     type = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'Filtr ({self.type})'
+        return f'{self.type}'
     
 class Decorator(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return f'Filter ({self.name})'
+        return f'{self.name}'
 
 class Aquarium(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -55,3 +55,34 @@ class Aquarium(models.Model):
 
     def __str__(self) -> str:
         return str(self.name)
+
+class AquariumParametrs(models.Model):
+    # NO2
+    minimum_no2 = models.PositiveSmallIntegerField(default=0)
+    maximum_no2 = models.PositiveSmallIntegerField(default=10)
+    too_low_no2_hint = models.CharField(max_length=100)
+    too_high_no2_hint = models.CharField(max_length=100)
+
+    # NO3
+    minimum_no3 = models.PositiveSmallIntegerField(default=0)
+    maximum_no3 = models.PositiveSmallIntegerField(default=10)
+    too_low_no3_hint = models.CharField(max_length=100)
+    too_high_no3_hint = models.CharField(max_length=100)
+    
+    # GH
+    minimum_gh = models.PositiveSmallIntegerField(default=0)
+    maximum_gh = models.PositiveSmallIntegerField(default=10)
+    too_low_gh_hint = models.CharField(max_length=100)
+    too_high_gh_hint = models.CharField(max_length=100)
+    
+    # KH
+    minimum_kh = models.PositiveSmallIntegerField(default=0)
+    maximum_kh = models.PositiveSmallIntegerField(default=10)
+    too_low_kh_hint = models.CharField(max_length=100)
+    too_high_kh_hint = models.CharField(max_length=100)
+    
+    # pH
+    minimum_ph = models.PositiveSmallIntegerField(default=0)
+    maximum_ph = models.PositiveSmallIntegerField(default=10)
+    too_low_ph_hint = models.CharField(max_length=100)
+    too_high_ph_hint = models.CharField(max_length=100)

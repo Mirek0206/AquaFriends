@@ -14,14 +14,18 @@
             </div>
             <br>
 
-            <form class="form" method="POST" enctype="multipart/form-data">
+            <form class="form" method="POST" enctype="multipart/form-data" id="aquarium-form">
                 {% csrf_token %}
 
                 {% for field in form %}
                 <div class="form__field">
                     <label for="formInput#text">{{field.label}}</label>
                     {{field}}
-
+                    
+                    {% if field.name in "pump, heater, light" %}
+                    <p id="{{field.name}}-hint" style="color: var(--color-main-light);"></p>
+                    {% endif %}
+                    
                     {% for error in field.errors %}
                     <p style="color: red;">{{error}}</p>
                     {% endfor %}
@@ -35,5 +39,41 @@
         </div>
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('aquarium-form');
+        const xInput = form.querySelector('input[name="x"]');
+        const yInput = form.querySelector('input[name="y"]');
+        const zInput = form.querySelector('input[name="z"]');
+        const pumpHint = document.getElementById('pump-hint');
+        const heaterHint = document.getElementById('heater-hint');
+        const lightHint = document.getElementById('light-hint');
+
+        function updateHints() {
+            const x = parseFloat(xInput.value) || 0;
+            const y = parseFloat(yInput.value) || 0;
+            const z = parseFloat(zInput.value) || 0;
+
+            if (x > 0 && y > 0 && z > 0) {
+                fetch(`{% url 'AquaMaker:get_min_power_devices' %}?x=${x}&y=${y}&z=${z}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        pumpHint.textContent = `Minimalna preferowana moc pompy: ${data.min_pump_power}`;
+                        heaterHint.textContent = `Minimalna preferowana moc grzałki: ${data.min_heater_power}`;
+                        lightHint.textContent = `Minimalna preferowana moc oświetlenia: ${data.min_light_power}`;
+                    });
+            } else {
+                pumpHint.textContent = '';
+                heaterHint.textContent = '';
+                lightHint.textContent = '';
+            }
+        }
+
+        xInput.addEventListener('input', updateHints);
+        yInput.addEventListener('input', updateHints);
+        zInput.addEventListener('input', updateHints);
+    });
+</script>
 
 {% endblock content %}
