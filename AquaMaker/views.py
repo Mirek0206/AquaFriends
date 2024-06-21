@@ -143,12 +143,15 @@ def aquarium_history(request, pk: int):
             "aquariums": Aquarium.objects.filter(user=request.user),
             "selected_aquarium": aquarium,
             "history": {
-                datetime.strptime(
+                datetime.strptime(  # noqa: DTZ007
                     item.split(" - ")[0],
                     "%Y-%m-%d %H:%M:%S",
-                ): item.split(
-                    " - ",
-                )[1]
+                ): " ".join(
+                    item.split(
+                        " - ",
+                        1,
+                    )[1:],
+                )
                 for item in combined_history
             },
             "form": form,
