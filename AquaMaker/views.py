@@ -1,14 +1,15 @@
 from __future__ import annotations
+from datetime import datetime
+from itertools import chain
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from itertools import chain
 
 from AquaLife.models import HistoricalFish
+from AquaMonitor.models import ExceptionalSituation
 
-from .forms import AquariumForm
+from .forms import AquariumForm, HistoryForm
 from .models import Aquarium, Heater, Light, Pump
 
 
@@ -41,10 +42,38 @@ _HISTORY_LABELS: dict[str, str] = {
 def format_filter_list(filters):
     return ", ".join([str(f.filter) for f in filters])
 
+def filter_history_by_date(history, start_date_str, end_date_str):
+    start_date = datetime.strptime(str(start_date_str), "%Y-%m-%d")
+    end_date = datetime.strptime(str(end_date_str), "%Y-%m-%d").replace(
+        hour=23,
+        minute=59,
+        second=59,
+    )
+
+    filtered_history = []
+    for entry in history:
+        date_str = entry.split(" - ")[0]
+        entry_date = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+
+        if start_date <= entry_date <= end_date:
+            filtered_history.append(entry)
+
+    return filtered_history
+
 
 @login_required(login_url="login")
 def aquarium_history(request, pk: int):
-    aquarium = Aquarium.objects.get(id=pk)
+    try:
+        aquarium = Aquarium.objects.get(id=pk)
+    except Aquarium.DoesNotExist:
+        messages.error(request, "Historia dla tego akwarium nie istnieje !")
+        return redirect("account")
+
+    if aquarium.user != request.user:
+        messages.error(request, "To akwarium nie naley do Ciebie !")
+        return redirect("account")
+
+    form = HistoryForm()
     history: list[str] = []
 
     change = aquarium.history.first()
@@ -56,13 +85,14 @@ def aquarium_history(request, pk: int):
         for event in delta.changes:
             if event.field == "filters":
                 old_filters = format_filter_list(old_record.filters.all())
+                old_filters = old_filters if old_filters else "BRAK"
                 new_filters = format_filter_list(new_record.filters.all())
                 history.append(
-                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - { _HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{old_filters}' na '{new_filters}'"
+                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - { _HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{old_filters}' na '{new_filters}'",
                 )
             else:
                 history.append(
-                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - {_HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{event.old}' na '{event.new}'"
+                    f"{new_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - {_HISTORY_LABELS.get(event.field, event.field)} zmieniono z '{event.old}' na '{event.new}'",
                 )
         change = change.prev_record
 
@@ -80,9 +110,15 @@ def aquarium_history(request, pk: int):
                 f"{fish_history_record.history_date.strftime('%Y-%m-%d %H:%M:%S')} - Usunięto rybę '{fish_history_record.name}' ({fish_history_record.species})",
             )
 
+    # Get ExceptionalSituations
+    es_history = [
+        f"{situation.date.strftime('%Y-%m-%d %H:%M:%S')} - {situation.situation_type}"
+        for situation in ExceptionalSituation.objects.filter(aquarium=aquarium)
+    ]
+
     # Combine and sort the history
     combined_history = sorted(
-        chain(history, fish_history),
+        chain(history, fish_history, es_history),
         key=lambda x: x.split(" - ")[0],
         reverse=True,
     )
@@ -91,12 +127,31 @@ def aquarium_history(request, pk: int):
         f"{aquarium.history.last().history_date.strftime('%Y-%m-%d %H:%M:%S')} - Dodano akwarium",
     )
 
+    if request.method == "POST":
+        form = HistoryForm(request.POST)
+        if form.is_valid():
+            combined_history = filter_history_by_date(
+                combined_history,
+                form.cleaned_data["start_date"],
+                form.cleaned_data["end_date"],
+            )
+
     return render(
         request,
         "AquaMaker/aquarium_history.html",
         {
-            "aquarium": aquarium,
-            "history": combined_history,
+            "aquariums": Aquarium.objects.filter(user=request.user),
+            "selected_aquarium": aquarium,
+            "history": {
+                datetime.strptime(
+                    item.split(" - ")[0],
+                    "%Y-%m-%d %H:%M:%S",
+                ): item.split(
+                    " - ",
+                )[1]
+                for item in combined_history
+            },
+            "form": form,
         },
     )
 

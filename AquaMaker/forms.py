@@ -1,6 +1,10 @@
+from typing import ClassVar
+
 from django import forms
 from django_select2.forms import Select2MultipleWidget
+
 from .models import Aquarium
+
 
 class AquariumForm(forms.ModelForm):
     class Meta:
@@ -30,9 +34,20 @@ class AquariumForm(forms.ModelForm):
         self.user = user
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})
-    
+
     def clean_filters(self):
         filters = self.cleaned_data.get('filters')
         if not filters:
             raise forms.ValidationError('Wybierz przynajmniej jeden filtr.')
         return filters
+
+class HistoryForm(forms.Form):
+    start_date = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date", "class": "input"}),
+        label="Data Początkowa",
+    )
+
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date", "class": "input"}),
+        label="Data końcowa",
+    )
