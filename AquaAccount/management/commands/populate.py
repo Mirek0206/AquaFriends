@@ -80,6 +80,23 @@ class Command(BaseCommand):
             species.conflict.set(conflicts)
             species.save()
 
+        # create aquarium decorators
+        decorators = [
+            Decorator(name='Wielka skała'),
+            Decorator(name='Zielona roślina'),
+            Decorator(name='Kawałek drewna'),
+            Decorator(name='Kolorowy żwir'),
+            Decorator(name='Antyczny posąg'),
+            Decorator(name='Morska muszla'),
+            Decorator(name='Mały zamek'),
+            Decorator(name='Kamienne mostki'),
+            Decorator(name='Zielona trawa'),
+            Decorator(name='Rybacka sieć')
+        ]
+
+        for d in decorators:
+            d.save()
+
         # create aquarium parameters
         AquariumParametrs(
             minimum_no2=0,
@@ -98,8 +115,8 @@ class Command(BaseCommand):
             maximum_kh=8,
             too_low_kh_hint="KH za niskie, dodaj węglan sodu",
             too_high_kh_hint="KH za wysokie, wymień część wody",
-            minimum_ph=6.5,
-            maximum_ph=7.5,
+            minimum_ph=3,
+            maximum_ph=7,
             too_low_ph_hint="pH za niskie, dodaj bufor pH",
             too_high_ph_hint="pH za wysokie, dodaj CO2 lub kwas fosforowy"
         ).save()
@@ -212,7 +229,7 @@ class Command(BaseCommand):
                     z=random.randrange(10, 50),
                     light=random.choice(Light.objects.all()),
                     pump=random.choice(Pump.objects.all()),
-                    heater=random.choice(Heater.objects.all()),
+                    heater=random.choice(Heater.objects.all())
                 )
 
                 first_aquarium.filters.add(random.choice(Filter.objects.all()))
@@ -225,7 +242,7 @@ class Command(BaseCommand):
                     z=random.randrange(10, 50),
                     light=random.choice(Light.objects.all()),
                     pump=random.choice(Pump.objects.all()),
-                    heater=random.choice(Heater.objects.all()),
+                    heater=random.choice(Heater.objects.all())
                 )
 
                 second_aquarium.filters.add(random.choice(Filter.objects.all()))
@@ -238,7 +255,7 @@ class Command(BaseCommand):
                     z=random.randrange(10, 50),
                     light=random.choice(Light.objects.all()),
                     pump=random.choice(Pump.objects.all()),
-                    heater=random.choice(Heater.objects.all()),
+                    heater=random.choice(Heater.objects.all())
                 )
                 
                 third_aquarium.filters.add(random.choice(Filter.objects.all()))
@@ -285,6 +302,11 @@ class Command(BaseCommand):
                     aquarium=third_aquarium,
                     situation_type=random.choice(SituationType.objects.all())
                 ).save()
+
+                # add 2 decorators to each aquarium
+                first_aquarium.decorators.set(generate_two_decorators_set())
+                second_aquarium.decorators.set(generate_two_decorators_set())
+                third_aquarium.decorators.set(generate_two_decorators_set())
 
                 # save all aquariums
                 first_aquarium.save()
@@ -402,3 +424,14 @@ class ProfileGenerator(Generator, BaseProvider):
         :rtype: str
         """
         return f'{name.replace(" ", ".")}{random.randint(0, 2137)}@{self.__faker.free_email_domain()}'.lower()
+    
+def generate_two_decorators_set() -> set[Decorator]:
+    decs = set()
+
+    while len(decs) < 2:
+        random_decorator = random.choice(Decorator.objects.all())
+
+        if random_decorator not in decs:
+            decs.add(random_decorator)
+
+    return decs
