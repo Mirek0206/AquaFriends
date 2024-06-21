@@ -48,7 +48,7 @@
               {% for date, record in history.items %}
                 <div style="text-align: left;" class="message_card">
                   <div style="width: 28%;"><p><b>Data:</b> {{ date|date:"d.m.Y H:i" }}</p></div>
-                  <div><p> {{ record }}</p></div>
+                  <div style="width: 70%;"><p> {{ record }}</p></div>
                 </div>
               {% empty %}
                   <h4>Historia jest pusta.</h4>
