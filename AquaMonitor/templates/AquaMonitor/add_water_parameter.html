@@ -10,7 +10,11 @@
             <div class="formHead">
                 <a class="tag tag--pill tag--main settings__btn tag--lg" href="{% url 'AquaMonitor:user_aquariums_and_parameters' aquarium.id %}">
                     <i class="im im-plus"></i>Powrót</a>
+                {% if page == "parameters" %}
                 <h3>Dodaj parametry dla akwarium {{ aquarium.name }}</h3>
+                {% else %}
+                <h3>Dodaj sytuację wyjątkową {{ aquarium.name }}</h3>
+                {% endif %}
             </div>
             <br>
 

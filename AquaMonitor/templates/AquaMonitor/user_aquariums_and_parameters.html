@@ -32,9 +32,9 @@
                 <h2 class="dev__username">Historia parametrów dla {{ selected_aquarium.name }}</h2>
                 {% for parameter in parameters_history %}
                 {% if forloop.first %}
-                  <div style="text-align: left; border: 2px solid var(--color-main-light);" class="message_card">
+                  <div style="text-align: left; border: 2px solid var(--color-main-light); width: 100%;" class="message_card">
                 {% else %}
-                  <div style="text-align: left;" class="message_card">
+                  <div style="text-align: left; width: 100%;" class="message_card">
                 {% endif %}
                     <div style="width: 28%;"><p><b>Data:</b> {{ parameter.date|date:"d.m.Y H:i" }}</p></div>
                     <div style="width: 14%;"><p><b>NO2:</b> {{ parameter.no2 }}</p></div>
@@ -43,6 +43,12 @@
                     <div style="width: 14%;"><p><b>KH:</b> {{ parameter.kh }}</p></div>
                     <div style="width: 14%;"><p><b>pH:</b> {{ parameter.ph }}</p></div>
                 </div>
+                {% if forloop.first %} 
+                  {% for hint in parameter_hints %}
+                    <p style="color: #ffa30e;"> {{ hint }} </p> 
+                  {% endfor %}
+                
+                {% endif %}
                 {% empty %}
                     <h4>Historia jest pusta.</h4>
                 {% endfor %}
@@ -54,6 +60,31 @@
             {% endif %}
             </div>
           </div>
+        <div class="card text-center">
+          <div class="card__body dev">
+            {% if selected_aquarium %}
+            <div class="card__body dev">
+              <h2 class="dev__username">Historia sytuacji wyjątkowych</h2>
+                {% for situation in exceptional_situations_history %}
+                {% if forloop.first %}
+                  <div style="text-align: left; border: 2px solid var(--color-main-light); width: 100%;" class="message_card">
+                {% else %}
+                  <div style="text-align: left; width: 100%;" class="message_card">
+                {% endif %}
+                    <div style="width: 28%;"><p><b>Data:</b> {{ situation.date|date:"d.m.Y H:i" }}</p></div>
+                    <div style="width: 70%;"><p><b>Sytuacja:</b> {{ situation.situation_type.name }}</p></div>
+                  </div>
+                  {% if forloop.first %} <p style="color: #ffa30e;">{{ situation.situation_type.hint }}</p> {% endif %}
+                {% empty %}
+                    <h4>Historia jest pusta.</h4>
+                {% endfor %}
+                <div class="settings__saveBtn">
+                    <a class="btn tag--main btn--main my-md tag--pill" href="{% url 'AquaMonitor:add_exceptional_situation' selected_aquarium.id %}">Dodaj sytuację</a>
+                </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </div>
   </div>

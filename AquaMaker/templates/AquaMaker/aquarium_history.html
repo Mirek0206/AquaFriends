@@ -12,7 +12,11 @@
             <h2 class="dev__username">Twoje akwaria</h2>
             {% for aquarium in aquariums %}
                 <a style="all: initial; cursor: pointer" href="{% url 'AquaMaker:history_aquarium' aquarium.id %}">
-                    <div class="message_card">
+                    {% if selected_aquarium and selected_aquarium.id == aquarium.id%}
+                      <div style="border: 2px solid var(--color-main-light);" class="message_card">
+                    {% else %}
+                      <div class="message_card">
+                    {% endif %}
                         <h3>{{ aquarium.name }}</h3>
                     </div>
                 </a>
