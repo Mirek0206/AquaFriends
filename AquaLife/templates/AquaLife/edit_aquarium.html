@@ -187,6 +187,10 @@
                 if (data.conflicts && data.conflicts.length > 0) {
                     speciesHint.textContent = `Konfliktujące gatunki: ${data.conflicts.join(', ')}`;
                 }
+                else
+                {
+                  speciesHint.textContent = ``;
+                }
             });
     });
   });
